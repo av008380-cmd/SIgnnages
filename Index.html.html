@@ -17,7 +17,7 @@ html{scroll-behavior:smooth}
 body{font-family:'Barlow',sans-serif;background:var(--D);color:var(--W);min-height:100vh;
   background-image:repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(255,255,255,0.012) 80px,rgba(255,255,255,0.012) 81px),
   repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,0.012) 80px,rgba(255,255,255,0.012) 81px);}
-
+ 
 /* ── HEADER ── */
 .hstripe{background:var(--R);height:5px}
 .header{background:var(--Y);color:var(--D)}
@@ -29,7 +29,7 @@ body{font-family:'Barlow',sans-serif;background:var(--D);color:var(--W);min-heig
 .htxt p{font-size:0.75rem;font-weight:700;color:#5A4800;text-transform:uppercase;letter-spacing:0.12em;margin-top:0.25rem}
 .hbadge{background:var(--D);color:var(--Y);padding:1.1rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;display:flex;align-items:center;text-align:right;flex-shrink:0;line-height:1.5}
 @media(max-width:520px){.hbadge{display:none}}
-
+ 
 /* ── TABS ── */
 .tab-bar{background:var(--D2);border-bottom:1px solid var(--MID);max-width:1100px;margin:0 auto;display:flex;padding:0 1rem}
 .tab-btn{padding:0.9rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--MT);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;display:flex;align-items:center;gap:0.5rem;white-space:nowrap}
@@ -37,10 +37,10 @@ body{font-family:'Barlow',sans-serif;background:var(--D);color:var(--W);min-heig
 .tab-btn.active{color:var(--Y);border-bottom-color:var(--Y)}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
-
+ 
 /* ── LAYOUT ── */
 .wrap{max-width:1100px;margin:0 auto;padding:1.5rem 1rem;display:flex;flex-direction:column;gap:1.5rem}
-
+ 
 /* ── CARD ── */
 .card{background:var(--D2);border:1px solid var(--MID);border-radius:4px;overflow:hidden}
 .chdr{padding:0.8rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;display:flex;align-items:center;gap:0.55rem;border-bottom:1px solid var(--MID)}
@@ -48,14 +48,14 @@ body{font-family:'Barlow',sans-serif;background:var(--D);color:var(--W);min-heig
 .chdr.sec{background:var(--D3);color:var(--MT)}
 .chdr.grn{background:#052e16;color:#4ade80;border-bottom-color:rgba(74,222,128,0.2)}
 .cbody{padding:1.4rem}
-
+ 
 /* ── FORM ── */
 .frow{display:grid;grid-template-columns:1fr;gap:1.1rem;margin-bottom:1.4rem}
 @media(min-width:600px){.frow{grid-template-columns:1fr 1fr}}
 @media(min-width:900px){.frow.col3{grid-template-columns:1.5fr 1fr 1fr}}
 .fg{display:flex;flex-direction:column;gap:0.45rem;position:relative}
 .flabel{font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--MT)}
-
+ 
 /* ── SEARCHABLE DD ── */
 .swrap{position:relative}
 .sinp{width:100%;padding:0.72rem 2.4rem 0.72rem 0.9rem;background:var(--D3);border:1px solid var(--MID);border-radius:3px;color:var(--W);font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:500;outline:none;transition:border-color 0.2s;cursor:pointer}
@@ -80,16 +80,16 @@ body{font-family:'Barlow',sans-serif;background:var(--D);color:var(--W);min-heig
 .dn{flex:1;color:var(--W)}
 .dn mark{background:transparent;color:var(--Y);font-weight:700}
 .nores{padding:0.9rem;font-size:0.855rem;color:var(--MT);text-align:center}
-
+ 
 /* ── NATIVE SELECT ── */
 .nsel{padding:0.72rem 2.4rem 0.72rem 0.9rem;background:var(--D3);border:1px solid var(--MID);border-radius:3px;color:var(--W);font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:500;cursor:pointer;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A8075' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.8rem center;width:100%}
 .nsel:focus{border-color:var(--Y)}
-
+ 
 /* ── BUTTON ── */
 .btn{background:var(--Y);color:var(--D);border:none;padding:0.8rem 1.8rem;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;cursor:pointer;display:inline-flex;align-items:center;gap:0.55rem;transition:background 0.14s,transform 0.1s}
 .btn:hover{background:#FFD700;transform:translateY(-1px)}
 .btn:active{transform:translateY(0)}
-
+ 
 /* ── RESULT BOX ── */
 .rbox{margin-top:1.4rem;border:1px solid rgba(245,196,0,0.28);border-radius:4px;overflow:hidden;display:none}
 .rbox.show{display:block;animation:fup 0.3s ease}
@@ -108,11 +108,11 @@ body{font-family:'Barlow',sans-serif;background:var(--D);color:var(--W);min-heig
 .rl svg{color:var(--Y);flex-shrink:0}
 .rv{font-size:0.855rem;font-weight:500;line-height:1.5}
 .rv.big{color:var(--Y);font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800}
-
+ 
 /* ── GRID ── */
 .g2{display:grid;grid-template-columns:1fr;gap:1.5rem}
 @media(min-width:700px){.g2{grid-template-columns:1fr 1fr}}
-
+ 
 /* ── TABLE ── */
 .twrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:0.855rem}
@@ -123,7 +123,7 @@ tr:hover td{background:rgba(255,255,255,0.022)}
 .tc{color:#60A5FA;font-weight:600}
 .tg{color:#4ade80;font-weight:600}
 .ty{color:var(--Y);font-weight:600}
-
+ 
 /* ── INSTALL ── */
 .ii{display:flex;gap:0.9rem;padding:0.9rem 1.3rem;border-bottom:1px solid rgba(255,255,255,0.045);align-items:flex-start}
 .ii:last-child{border-bottom:none}
@@ -131,19 +131,19 @@ tr:hover td{background:rgba(255,255,255,0.022)}
 .idot svg{color:var(--Y)}
 .itxt strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.18rem}
 .itxt span{font-size:0.84rem;color:var(--MT);line-height:1.5}
-
+ 
 /* ── TAB 2: ROAD REFERENCE ── */
 .road-search-row{display:grid;grid-template-columns:1fr;gap:1.1rem;margin-bottom:1.4rem}
 @media(min-width:600px){.road-search-row{grid-template-columns:1fr 1fr 1fr}}
-
+ 
 .road-result{margin-top:0}
-
+ 
 /* Road type pills */
 .pill-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.4rem}
 .pill{padding:0.35rem 0.9rem;border-radius:100px;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;border:1px solid var(--MID);color:var(--MT);background:transparent;transition:all 0.15s}
 .pill:hover{border-color:var(--Y);color:var(--W)}
 .pill.active{background:var(--Y);color:var(--D);border-color:var(--Y)}
-
+ 
 /* Road spec card */
 .spec-card{background:var(--D3);border:1px solid var(--MID);border-radius:4px;overflow:hidden;animation:fup 0.3s ease}
 .spec-banner{padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid var(--MID)}
@@ -151,45 +151,45 @@ tr:hover td{background:rgba(255,255,255,0.022)}
 .spec-banner h2{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.15rem}
 .spec-banner p{font-size:0.78rem;color:var(--MT)}
 .spec-body{padding:1.4rem}
-
+ 
 .spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
 @media(min-width:700px){.spec-grid{grid-template-columns:repeat(4,1fr)}}
 .sg-item{background:var(--D2);border:1px solid var(--MID);border-radius:4px;padding:0.9rem}
 .sg-label{font-family:'Barlow Condensed',sans-serif;font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--MT);margin-bottom:0.3rem}
 .sg-val{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;line-height:1.2}
 .sg-sub{font-size:0.78rem;color:var(--MT);margin-top:0.15rem;line-height:1.4}
-
+ 
 .spec-section-title{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--MT);margin-bottom:0.75rem;margin-top:1.2rem;padding-bottom:0.4rem;border-bottom:1px solid var(--MID)}
 .spec-section-title:first-child{margin-top:0}
-
+ 
 .sign-size-table{width:100%;border-collapse:collapse;margin-bottom:1rem}
 .sign-size-table th{background:rgba(245,196,0,0.08);color:var(--Y);font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.55rem 0.8rem;border:1px solid var(--MID)}
 .sign-size-table td{padding:0.6rem 0.8rem;border:1px solid rgba(255,255,255,0.06);font-size:0.84rem}
 .sign-size-table tr:hover td{background:rgba(255,255,255,0.022)}
-
+ 
 .sheeting-strip{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem}
 .sh-badge{padding:0.4rem 0.9rem;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
 .sh-a{background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.35);color:#FDE047}
 .sh-b{background:rgba(234,179,8,0.22);border:1px solid rgba(234,179,8,0.5);color:#FACC15}
 .sh-c{background:rgba(245,196,0,0.3);border:1px solid rgba(245,196,0,0.6);color:var(--Y)}
-
+ 
 .color-chips{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.5rem}
 .chip{display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0.75rem;border-radius:3px;font-size:0.8rem;font-weight:600;border:1px solid}
 .chip-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-
+ 
 /* speed-to-road lookup */
 .lookup-result{background:var(--D3);border:1px solid var(--MID);border-radius:4px;padding:1.2rem 1.4rem;animation:fup 0.25s ease}
 .lookup-result h3{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:var(--Y);margin-bottom:0.5rem}
 .lookup-result p{font-size:0.855rem;color:var(--MT);line-height:1.6}
 .lookup-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.6rem}
 .ltag{padding:0.3rem 0.75rem;border-radius:100px;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;background:rgba(245,196,0,0.12);border:1px solid rgba(245,196,0,0.3);color:var(--Y)}
-
+ 
 /* hide/show util */
 .hidden{display:none!important}
 </style>
 </head>
 <body>
-
+ 
 <div class="hstripe"></div>
 <div class="header">
   <div class="hinner">
@@ -206,7 +206,7 @@ tr:hover td{background:rgba(255,255,255,0.022)}
     <div class="hbadge">Ministry of Road<br>Transport &amp; Highways<br><span style="opacity:0.5;font-size:0.6rem">IRC 67 : 2022</span></div>
   </div>
 </div>
-
+ 
 <!-- TAB BAR -->
 <div style="background:var(--D2);border-bottom:1px solid var(--MID)">
   <div class="tab-bar" style="max-width:1100px;margin:0 auto;display:flex;padding:0 1rem">
@@ -224,13 +224,13 @@ tr:hover td{background:rgba(255,255,255,0.022)}
     </button>
   </div>
 </div>
-
+ 
 <!-- ════════════════════════════════════
      TAB 1 — SIGN CALCULATOR
 ════════════════════════════════════ -->
 <div id="tab-calc" class="tab-panel active">
 <div class="wrap">
-
+ 
   <div class="card">
     <div class="chdr pri">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/></svg>
@@ -270,7 +270,7 @@ tr:hover td{background:rgba(255,255,255,0.022)}
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
         Generate Specifications
       </button>
-
+ 
       <div id="calcResult" class="rbox">
         <div class="rhdr" id="cRhdr">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
@@ -280,16 +280,16 @@ tr:hover td{background:rgba(255,255,255,0.022)}
       </div>
     </div>
   </div>
-
+ 
 </div><!-- /wrap -->
 </div><!-- /tab-calc -->
-
+ 
 <!-- ════════════════════════════════════
      TAB 2 — ROAD TYPE REFERENCE
 ════════════════════════════════════ -->
 <div id="tab-road" class="tab-panel">
 <div class="wrap">
-
+ 
   <!-- SEARCH PANEL -->
   <div class="card">
     <div class="chdr pri">
@@ -298,7 +298,7 @@ tr:hover td{background:rgba(255,255,255,0.022)}
     </div>
     <div class="cbody">
       <p style="font-size:0.84rem;color:var(--MT);margin-bottom:1.1rem">Select a road type <b style="color:var(--W)">or</b> enter a design speed to find sign sizes, sheeting class, background colours, and speed limits.</p>
-
+ 
       <!-- Method A: Road Type pills -->
       <div class="fg" style="margin-bottom:1rem">
         <label class="flabel">Select Road Type</label>
@@ -312,13 +312,13 @@ tr:hover td{background:rgba(255,255,255,0.022)}
           <button class="pill" onclick="selectRoad('urban',this)">Urban / Town Road</button>
         </div>
       </div>
-
+ 
       <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.1rem">
         <div style="flex:1;height:1px;background:var(--MID)"></div>
         <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--MT)">or search by speed</span>
         <div style="flex:1;height:1px;background:var(--MID)"></div>
       </div>
-
+ 
       <!-- Method B: Speed lookup -->
       <div class="road-search-row">
         <div class="fg">
@@ -332,18 +332,18 @@ tr:hover td{background:rgba(255,255,255,0.022)}
           </button>
         </div>
       </div>
-
+ 
       <!-- Speed lookup result -->
       <div id="spdResult" class="hidden"></div>
     </div>
   </div>
-
+ 
   <!-- Road spec display -->
   <div id="roadSpecOut" class="hidden"></div>
-
+ 
 </div>
 </div>
-
+ 
 <!-- ════════════════════════════════════
      TAB 3 — MATERIALS & INSTALLATION
 ════════════════════════════════════ -->
@@ -386,7 +386,7 @@ tr:hover td{background:rgba(255,255,255,0.022)}
       </div>
     </div>
   </div>
-
+ 
   <div class="card">
     <div class="chdr sec">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14"/><path d="m18 13-6-6-6 6"/><path d="M12 7v14"/></svg>
@@ -401,7 +401,7 @@ tr:hover td{background:rgba(255,255,255,0.022)}
       <div class="ii"><div class="idot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div><div class="itxt"><strong>Bollard-Mounted (Urban Only)</strong><span>Smaller 300 mm diameter boards permitted on bollards at traffic signals in dense urban areas.</span></div></div>
     </div>
   </div>
-
+ 
   <div class="card">
     <div class="chdr sec">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -422,7 +422,7 @@ tr:hover td{background:rgba(255,255,255,0.022)}
   </div>
 </div>
 </div>
-
+ 
 <!-- ═══════════════════════  JAVASCRIPT  ═══════════════════════ -->
 <script>
 // ══════════════════════════════════════════════════════
@@ -590,10 +590,10 @@ const DB=[
   {g:"Work Zone / Temporary (W-Series)",code:"W-8",name:"Merge Right / Left Ahead",type:"cautionary"},
   {g:"Work Zone / Temporary (W-Series)",code:"W-9",name:"One Lane Two Way Traffic Ahead",type:"cautionary"},
 ];
-
+ 
 const GROUPS={};
 DB.forEach(s=>{if(!GROUPS[s.g])GROUPS[s.g]=[];GROUPS[s.g].push(s);});
-
+ 
 // ── TAB SWITCH ──
 function switchTab(id,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
@@ -601,12 +601,12 @@ function switchTab(id,btn){
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
 }
-
+ 
 // ── SIGN DROPDOWN ──
 const inp=document.getElementById('signSearch'),ddEl=document.getElementById('sDd'),arrw=document.getElementById('sArrow');
 const hT=document.getElementById('hT'),hN=document.getElementById('hN');
 let hiIdx=-1;
-
+ 
 function hiText(txt,q){
   if(!q)return txt;
   const i=txt.toLowerCase().indexOf(q.toLowerCase());
@@ -644,7 +644,7 @@ inp.addEventListener('keydown',e=>{
   else if(e.key==='Escape')closeDD();
 });
 function updH(items){items.forEach((el,i)=>el.classList.toggle('hi',i===hiIdx));if(items[hiIdx])items[hiIdx].scrollIntoView({block:'nearest'});}
-
+ 
 // ── CALC SPECS ──
 function calcSpecs(){
   const type=hT.value,label=hN.value||inp.value.trim();
@@ -710,7 +710,7 @@ function calcSpecs(){
     <div class="ri sp2"><div class="rl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Design &amp; Colour Specifications</div><div class="rv" style="white-space:pre-line">${design}</div></div>`;
   pop(rDiv);
 }
-
+ 
 // ══════════════════════════════════════════════════════
 // ROAD TYPE DATABASE
 // ══════════════════════════════════════════════════════
@@ -786,7 +786,7 @@ const ROADS={
     sizes:[{speed:'Up to 50 kmph',mand:'600 mm (or 300 mm bollard)',caut:'600 mm',info:'X-height: 100 mm',facility:'600×450 mm'},{speed:'51–80 kmph',mand:'750–900 mm',caut:'750–900 mm',info:'X-height: 125–150 mm',facility:'600–800×450–600 mm'}]
   }
 };
-
+ 
 // speed → road type
 const SPEED_MAP=[
   {min:20,max:50,roads:['vr','odr','urban'],label:'Village / ODR / Urban (Low Speed)'},
@@ -796,9 +796,9 @@ const SPEED_MAP=[
   {min:101,max:120,roads:['nh','expressway'],label:'National Highway / Expressway'},
   {min:121,max:200,roads:['expressway'],label:'Expressway'},
 ];
-
+ 
 let activeRoad=null;
-
+ 
 function selectRoad(key,btn){
   activeRoad=key;
   document.querySelectorAll('#roadPills .pill').forEach(p=>p.classList.remove('active'));
@@ -806,7 +806,7 @@ function selectRoad(key,btn){
   document.getElementById('spdResult').classList.add('hidden');
   renderRoadSpec(key);
 }
-
+ 
 function renderRoadSpec(key){
   const r=ROADS[key];
   const out=document.getElementById('roadSpecOut');
@@ -818,7 +818,7 @@ function renderRoadSpec(key){
   const bannerBg=key==='expressway'?'rgba(37,99,235,0.15)':key==='urban'?'rgba(37,99,235,0.1)':'rgba(22,163,74,0.12)';
   const iconBg=key==='expressway'||key==='urban'?'rgba(37,99,235,0.25)':'rgba(22,163,74,0.2)';
   const iconColor=key==='expressway'||key==='urban'?'#60A5FA':'#4ade80';
-
+ 
   out.innerHTML=`<div class="spec-card">
     <div class="spec-banner" style="background:${bannerBg}">
       <div class="spec-banner-icon" style="background:${iconBg};color:${iconColor}">
@@ -834,13 +834,13 @@ function renderRoadSpec(key){
         <div class="sg-item"><div class="sg-label">Sheeting Class</div><div class="sg-val" style="font-size:0.85rem;color:var(--Y)">${r.sheeting.split('.')[0]}</div></div>
         <div class="sg-item"><div class="sg-label">Post Height</div><div class="sg-val" style="font-size:0.85rem">${r.postH}</div></div>
       </div>
-
+ 
       <div class="spec-section-title">Speed Limits</div>
       <div style="background:rgba(255,255,255,0.04);border:1px solid var(--MID);border-radius:4px;padding:0.8rem 1rem;font-size:0.855rem;color:var(--W)">${r.speedLimits}</div>
-
+ 
       <div class="spec-section-title">Sign Sizes by Speed</div>
       <div class="twrap"><table class="sign-size-table"><thead><tr><th>Speed Range</th><th>Mandatory / Cautionary</th><th>Warning (Triangular)</th><th>Informatory</th><th>Facility</th></tr></thead><tbody>${sRows}</tbody></table></div>
-
+ 
       <div class="spec-section-title">Road Characteristics</div>
       <div class="lookup-tags">${tags}</div>
     </div>
@@ -848,7 +848,7 @@ function renderRoadSpec(key){
   out.classList.remove('hidden');
   out.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-
+ 
 function lookupBySpeed(){
   const v=parseInt(document.getElementById('spdInput').value);
   const out=document.getElementById('spdResult');
@@ -858,7 +858,7 @@ function lookupBySpeed(){
   }
   const match=SPEED_MAP.find(m=>v>=m.min&&v<=m.max);
   if(!match){out.innerHTML=`<div class="lookup-result"><h3>No Match</h3><p>Speed ${v} kmph did not match any IRC road category.</p></div>`;out.classList.remove('hidden');return;}
-
+ 
   // sign sizes for this speed
   let mand='',caut='',info='',fac='';
   if(v<=50){mand='600 mm dia';caut='600 mm side';info='X-Height 100 mm';fac='600×450 mm';}
@@ -868,7 +868,7 @@ function lookupBySpeed(){
   else{mand='1500 mm dia';caut='1500 mm side';info='X-Height 300 mm';fac='900×600 mm';}
   const shClass=v>80?'Class C (Micro-Prismatic)':v>50?'Class B (High Intensity)':'Class A (Engineering Grade)';
   const roadLinks=match.roads.map(rk=>`<button class="ltag" style="border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif" onclick="document.querySelectorAll('#roadPills .pill').forEach(p=>p.classList.remove('active'));selectRoad('${rk}',document.createElement('button'))">${ROADS[rk].name}</button>`).join('');
-
+ 
   out.innerHTML=`<div class="lookup-result">
     <h3>Design Speed: ${v} kmph — ${match.label}</h3>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin:0.75rem 0">
@@ -886,10 +886,10 @@ function lookupBySpeed(){
   document.getElementById('roadSpecOut').classList.add('hidden');
   activeRoad=null;
 }
-
+ 
 // Enter key on speed input
 document.getElementById('spdInput').addEventListener('keydown',e=>{if(e.key==='Enter')lookupBySpeed();});
-
+ 
 function pop(el){el.classList.remove('show');void el.offsetWidth;el.classList.add('show');}
 </script>
 </body>
