@@ -3,894 +3,700 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IRC 67-2022 Road Sign Assistant</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<title>IRC 67:2022 — Road Sign Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --Y: #F5C400; --R: #D00000; --D: #0D0D0D; --D2: #181818; --D3: #222222;
-  --D4: #2C2C2C; --MID: #3C3C3C; --MID2: #4A4A4A; --MT: #8A8075; --W: #F2EDE4;
-  --GRN: #16A34A; --BLU: #2563EB; --ORG: #EA580C;
+  --bg:      #0b0e13;
+  --surf:    #111620;
+  --card:    #161c28;
+  --border:  #1f2a3c;
+  --bhi:     #2a3a52;
+  --text:    #e8edf5;
+  --muted:   #57677f;
+  --dim:     #3a4a60;
+  --accent:  #3b82f6;
+  --acc-lo:  rgba(59,130,246,.12);
+  --amber:   #f59e0b;
+  --red:     #ef4444;
+  --r:       9px;
+  --font:    'DM Sans', sans-serif;
+  --mono:    'DM Mono', monospace;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Barlow',sans-serif;background:var(--D);color:var(--W);min-height:100vh;
-  background-image:repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(255,255,255,0.012) 80px,rgba(255,255,255,0.012) 81px),
-  repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,0.012) 80px,rgba(255,255,255,0.012) 81px);}
- 
+html, body { height: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  font-size: 14px;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bhi); border-radius: 4px; }
+
 /* ── HEADER ── */
-.hstripe{background:var(--R);height:5px}
-.header{background:var(--Y);color:var(--D)}
-.hinner{display:flex;align-items:stretch;max-width:1100px;margin:0 auto}
-.hicon{background:var(--D);padding:1.2rem 1.4rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hicon svg{width:50px;height:50px}
-.htxt{padding:1.1rem 1.4rem;flex:1}
-.htxt h1{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;line-height:1.1}
-.htxt p{font-size:0.75rem;font-weight:700;color:#5A4800;text-transform:uppercase;letter-spacing:0.12em;margin-top:0.25rem}
-.hbadge{background:var(--D);color:var(--Y);padding:1.1rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;display:flex;align-items:center;text-align:right;flex-shrink:0;line-height:1.5}
-@media(max-width:520px){.hbadge{display:none}}
- 
-/* ── TABS ── */
-.tab-bar{background:var(--D2);border-bottom:1px solid var(--MID);max-width:1100px;margin:0 auto;display:flex;padding:0 1rem}
-.tab-btn{padding:0.9rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--MT);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;display:flex;align-items:center;gap:0.5rem;white-space:nowrap}
-.tab-btn:hover{color:var(--W)}
-.tab-btn.active{color:var(--Y);border-bottom-color:var(--Y)}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
- 
-/* ── LAYOUT ── */
-.wrap{max-width:1100px;margin:0 auto;padding:1.5rem 1rem;display:flex;flex-direction:column;gap:1.5rem}
- 
-/* ── CARD ── */
-.card{background:var(--D2);border:1px solid var(--MID);border-radius:4px;overflow:hidden}
-.chdr{padding:0.8rem 1.4rem;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;display:flex;align-items:center;gap:0.55rem;border-bottom:1px solid var(--MID)}
-.chdr.pri{background:var(--D3);color:var(--Y);border-bottom-color:rgba(245,196,0,0.2)}
-.chdr.sec{background:var(--D3);color:var(--MT)}
-.chdr.grn{background:#052e16;color:#4ade80;border-bottom-color:rgba(74,222,128,0.2)}
-.cbody{padding:1.4rem}
- 
-/* ── FORM ── */
-.frow{display:grid;grid-template-columns:1fr;gap:1.1rem;margin-bottom:1.4rem}
-@media(min-width:600px){.frow{grid-template-columns:1fr 1fr}}
-@media(min-width:900px){.frow.col3{grid-template-columns:1.5fr 1fr 1fr}}
-.fg{display:flex;flex-direction:column;gap:0.45rem;position:relative}
-.flabel{font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--MT)}
- 
-/* ── SEARCHABLE DD ── */
-.swrap{position:relative}
-.sinp{width:100%;padding:0.72rem 2.4rem 0.72rem 0.9rem;background:var(--D3);border:1px solid var(--MID);border-radius:3px;color:var(--W);font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:500;outline:none;transition:border-color 0.2s;cursor:pointer}
-.sinp::placeholder{color:var(--MT)}
-.sinp:focus{border-color:var(--Y)}
-.sinp.sel{border-color:rgba(245,196,0,0.5)}
-.sarrow{position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--MT);transition:transform 0.2s,color 0.2s}
-.sarrow.open{transform:translateY(-50%) rotate(180deg);color:var(--Y)}
-.sdd{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:var(--D3);border:1px solid var(--MID);border-radius:3px;max-height:280px;overflow-y:auto;z-index:300;box-shadow:0 16px 48px rgba(0,0,0,0.7)}
-.sdd.open{display:block;animation:ddin 0.14s ease}
-@keyframes ddin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-.sdd::-webkit-scrollbar{width:3px}
-.sdd::-webkit-scrollbar-thumb{background:var(--MID);border-radius:2px}
-.ghdr{padding:0.4rem 0.9rem 0.28rem;font-family:'Barlow Condensed',sans-serif;font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--Y);background:rgba(245,196,0,0.07);border-top:1px solid var(--MID);border-bottom:1px solid rgba(245,196,0,0.12);position:sticky;top:0;z-index:1}
-.ghdr:first-child{border-top:none}
-.ddi{padding:0.52rem 0.9rem;font-size:0.855rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.035);display:flex;align-items:center;gap:0.55rem;transition:background 0.1s}
-.ddi:last-child{border-bottom:none}
-.ddi:hover,.ddi.hi{background:rgba(245,196,0,0.1)}
-.ddi:hover .dc,.ddi.hi .dc{color:rgba(245,196,0,0.7)}
-.ddi:hover .dn,.ddi.hi .dn{color:var(--Y)}
-.dc{font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;color:var(--MT);min-width:40px;flex-shrink:0}
-.dn{flex:1;color:var(--W)}
-.dn mark{background:transparent;color:var(--Y);font-weight:700}
-.nores{padding:0.9rem;font-size:0.855rem;color:var(--MT);text-align:center}
- 
-/* ── NATIVE SELECT ── */
-.nsel{padding:0.72rem 2.4rem 0.72rem 0.9rem;background:var(--D3);border:1px solid var(--MID);border-radius:3px;color:var(--W);font-family:'Barlow',sans-serif;font-size:0.9rem;font-weight:500;cursor:pointer;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A8075' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.8rem center;width:100%}
-.nsel:focus{border-color:var(--Y)}
- 
-/* ── BUTTON ── */
-.btn{background:var(--Y);color:var(--D);border:none;padding:0.8rem 1.8rem;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;cursor:pointer;display:inline-flex;align-items:center;gap:0.55rem;transition:background 0.14s,transform 0.1s}
-.btn:hover{background:#FFD700;transform:translateY(-1px)}
-.btn:active{transform:translateY(0)}
- 
-/* ── RESULT BOX ── */
-.rbox{margin-top:1.4rem;border:1px solid rgba(245,196,0,0.28);border-radius:4px;overflow:hidden;display:none}
-.rbox.show{display:block;animation:fup 0.3s ease}
-.rbox.err{border-color:rgba(220,38,38,0.4)}
-@keyframes fup{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-.rhdr{background:rgba(245,196,0,0.09);border-bottom:1px solid rgba(245,196,0,0.18);padding:0.7rem 1.1rem;font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--Y);display:flex;align-items:center;gap:0.45rem}
-.rhdr.err{background:rgba(220,38,38,0.09);border-bottom-color:rgba(220,38,38,0.2);color:#f87171}
-.rgrid{display:grid;grid-template-columns:1fr 1fr}
-@media(max-width:520px){.rgrid{grid-template-columns:1fr}.sp2{grid-column:span 1!important}}
-.ri{padding:1rem 1.1rem;border-right:1px solid var(--MID);border-bottom:1px solid var(--MID)}
-.ri:nth-child(2n){border-right:none}
-.ri:last-child{border-bottom:none}
-.sp2{grid-column:span 2;border-right:none!important}
-.rgrid .ri:nth-last-child(1),.rgrid .ri:nth-last-child(2):not(.sp2){border-bottom:none}
-.rl{font-family:'Barlow Condensed',sans-serif;font-size:0.58rem;text-transform:uppercase;color:var(--MT);font-weight:700;letter-spacing:0.12em;margin-bottom:0.3rem;display:flex;align-items:center;gap:0.35rem}
-.rl svg{color:var(--Y);flex-shrink:0}
-.rv{font-size:0.855rem;font-weight:500;line-height:1.5}
-.rv.big{color:var(--Y);font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800}
- 
-/* ── GRID ── */
-.g2{display:grid;grid-template-columns:1fr;gap:1.5rem}
-@media(min-width:700px){.g2{grid-template-columns:1fr 1fr}}
- 
-/* ── TABLE ── */
-.twrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:0.855rem}
-th{background:var(--D3);padding:0.7rem 0.9rem;text-align:left;font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--MT);border-bottom:1px solid var(--MID)}
-td{padding:0.8rem 0.9rem;border-bottom:1px solid rgba(255,255,255,0.045);vertical-align:top;line-height:1.5;font-size:0.855rem}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,0.022)}
-.tc{color:#60A5FA;font-weight:600}
-.tg{color:#4ade80;font-weight:600}
-.ty{color:var(--Y);font-weight:600}
- 
-/* ── INSTALL ── */
-.ii{display:flex;gap:0.9rem;padding:0.9rem 1.3rem;border-bottom:1px solid rgba(255,255,255,0.045);align-items:flex-start}
-.ii:last-child{border-bottom:none}
-.idot{width:26px;height:26px;border-radius:50%;background:rgba(245,196,0,0.09);border:1px solid rgba(245,196,0,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.idot svg{color:var(--Y)}
-.itxt strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.18rem}
-.itxt span{font-size:0.84rem;color:var(--MT);line-height:1.5}
- 
-/* ── TAB 2: ROAD REFERENCE ── */
-.road-search-row{display:grid;grid-template-columns:1fr;gap:1.1rem;margin-bottom:1.4rem}
-@media(min-width:600px){.road-search-row{grid-template-columns:1fr 1fr 1fr}}
- 
-.road-result{margin-top:0}
- 
-/* Road type pills */
-.pill-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.4rem}
-.pill{padding:0.35rem 0.9rem;border-radius:100px;font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;border:1px solid var(--MID);color:var(--MT);background:transparent;transition:all 0.15s}
-.pill:hover{border-color:var(--Y);color:var(--W)}
-.pill.active{background:var(--Y);color:var(--D);border-color:var(--Y)}
- 
-/* Road spec card */
-.spec-card{background:var(--D3);border:1px solid var(--MID);border-radius:4px;overflow:hidden;animation:fup 0.3s ease}
-.spec-banner{padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid var(--MID)}
-.spec-banner-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:0.7rem}
-.spec-banner h2{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.15rem}
-.spec-banner p{font-size:0.78rem;color:var(--MT)}
-.spec-body{padding:1.4rem}
- 
-.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
-@media(min-width:700px){.spec-grid{grid-template-columns:repeat(4,1fr)}}
-.sg-item{background:var(--D2);border:1px solid var(--MID);border-radius:4px;padding:0.9rem}
-.sg-label{font-family:'Barlow Condensed',sans-serif;font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--MT);margin-bottom:0.3rem}
-.sg-val{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;line-height:1.2}
-.sg-sub{font-size:0.78rem;color:var(--MT);margin-top:0.15rem;line-height:1.4}
- 
-.spec-section-title{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--MT);margin-bottom:0.75rem;margin-top:1.2rem;padding-bottom:0.4rem;border-bottom:1px solid var(--MID)}
-.spec-section-title:first-child{margin-top:0}
- 
-.sign-size-table{width:100%;border-collapse:collapse;margin-bottom:1rem}
-.sign-size-table th{background:rgba(245,196,0,0.08);color:var(--Y);font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:0.55rem 0.8rem;border:1px solid var(--MID)}
-.sign-size-table td{padding:0.6rem 0.8rem;border:1px solid rgba(255,255,255,0.06);font-size:0.84rem}
-.sign-size-table tr:hover td{background:rgba(255,255,255,0.022)}
- 
-.sheeting-strip{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem}
-.sh-badge{padding:0.4rem 0.9rem;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
-.sh-a{background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.35);color:#FDE047}
-.sh-b{background:rgba(234,179,8,0.22);border:1px solid rgba(234,179,8,0.5);color:#FACC15}
-.sh-c{background:rgba(245,196,0,0.3);border:1px solid rgba(245,196,0,0.6);color:var(--Y)}
- 
-.color-chips{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.5rem}
-.chip{display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0.75rem;border-radius:3px;font-size:0.8rem;font-weight:600;border:1px solid}
-.chip-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
- 
-/* speed-to-road lookup */
-.lookup-result{background:var(--D3);border:1px solid var(--MID);border-radius:4px;padding:1.2rem 1.4rem;animation:fup 0.25s ease}
-.lookup-result h3{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:var(--Y);margin-bottom:0.5rem}
-.lookup-result p{font-size:0.855rem;color:var(--MT);line-height:1.6}
-.lookup-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.6rem}
-.ltag{padding:0.3rem 0.75rem;border-radius:100px;font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;background:rgba(245,196,0,0.12);border:1px solid rgba(245,196,0,0.3);color:var(--Y)}
- 
-/* hide/show util */
-.hidden{display:none!important}
+header {
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.brand-badge {
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: .4px;
+  font-family: var(--mono);
+}
+.brand-title { font-size: 14px; font-weight: 600; white-space: nowrap; }
+.brand-sub { font-size: 10px; color: var(--muted); }
+
+.search-wrap { position: relative; flex: 1; max-width: 340px; }
+.search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); width: 14px; height: 14px; pointer-events: none; }
+#searchInput {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  padding: 7px 12px 7px 32px;
+  border-radius: var(--r);
+  outline: none;
+  transition: border-color .15s;
+}
+#searchInput:focus { border-color: var(--accent); }
+#searchInput::placeholder { color: var(--muted); }
+
+/* ── SPEED BAR ── */
+#speedBar {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#speedBar::-webkit-scrollbar { display: none; }
+.sb-lbl {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .8px;
+  color: var(--muted);
+  white-space: nowrap; flex-shrink: 0;
+}
+.speed-pills { display: flex; gap: 6px; }
+
+.sp-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font);
+  font-size: 12px; font-weight: 600;
+  padding: 5px 11px 5px 11px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .14s;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 1px; line-height: 1.2;
+}
+.sp-btn .sp-speed { font-size: 12px; font-weight: 700; }
+.sp-btn .sp-road  { font-size: 9px; font-weight: 500; opacity: .65; }
+.sp-btn:hover { border-color: var(--accent); color: var(--text); }
+.sp-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sp-btn.active .sp-road { opacity: .85; }
+
+/* ── MAIN ── */
+main { display: flex; flex: 1; overflow: hidden; }
+
+/* ── LEFT ── */
+.left {
+  width: 285px; flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  background: var(--surf);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.left-hdr {
+  padding: 9px 14px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .8px; text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sign-count { font-size: 10px; font-family: var(--mono); color: var(--dim); }
+#signList { overflow-y: auto; flex: 1; padding: 6px; }
+
+.grp-lbl {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .7px; text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 8px 3px;
+}
+.sign-btn {
+  width: 100%; background: none; border: none;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 9px;
+  padding: 6px 9px; border-radius: 7px;
+  text-align: left; transition: background .1s;
+}
+.sign-btn:hover { background: var(--card); }
+.sign-btn.active { background: var(--acc-lo); }
+.sign-btn.active .s-code { color: var(--accent); border-color: rgba(59,130,246,.4); }
+.s-code {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--muted); border: 1px solid var(--bhi);
+  border-radius: 5px; padding: 2px 6px;
+  white-space: nowrap; min-width: 38px; text-align: center;
+  flex-shrink: 0; transition: color .1s, border-color .1s;
+}
+.s-name { font-size: 12.5px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hl { color: var(--accent); font-weight: 700; }
+.no-res { padding: 20px; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* ── RIGHT ── */
+.right { flex: 1; background: var(--bg); overflow-y: auto; display: flex; flex-direction: column; }
+
+.empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--muted); gap: 10px;
+}
+.empty-icon {
+  width: 52px; height: 52px;
+  border: 2px dashed var(--bhi); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.empty-icon svg { width: 20px; height: 20px; }
+.empty p { font-size: 13px; }
+.empty small { font-size: 11px; }
+
+/* ── DETAIL ── */
+.detail { display: none; flex-direction: column; flex: 1; }
+.detail.on { display: flex; }
+
+.d-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 16px;
+}
+.shape-wrap { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.s-octagon { width: 44px; height: 44px; background: var(--red); clip-path: polygon(30% 0%,70% 0%,100% 30%,100% 70%,70% 100%,30% 100%,0% 70%,0% 30%); }
+.s-circle { width: 44px; height: 44px; border-radius: 50%; border: 4px solid var(--red); background: #fff; }
+.s-triangle { width: 0; height: 0; border-left: 24px solid transparent; border-right: 24px solid transparent; border-bottom: 42px solid var(--red); position: relative; }
+.s-triangle::after { content: ''; position: absolute; border-left: 18px solid transparent; border-right: 18px solid transparent; border-bottom: 32px solid #fff; top: 8px; left: -18px; }
+.s-inv-tri { width: 0; height: 0; border-left: 24px solid transparent; border-right: 24px solid transparent; border-top: 42px solid var(--red); position: relative; }
+.s-inv-tri::after { content: ''; position: absolute; border-left: 18px solid transparent; border-right: 18px solid transparent; border-top: 32px solid #fff; top: -39px; left: -18px; }
+.s-rect { width: 44px; height: 30px; border: 3px solid var(--accent); background: #1a2e52; border-radius: 4px; }
+
+.d-meta { flex: 1; min-width: 0; }
+.d-tags { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap; }
+.tag { font-size: 10px; font-weight: 700; font-family: var(--mono); padding: 2px 7px; border-radius: 5px; letter-spacing: .3px; }
+.tag-code { background: var(--acc-lo); color: var(--accent); border: 1px solid rgba(59,130,246,.25); }
+.tag-cat  { background: transparent; color: var(--muted); border: 1px solid var(--bhi); }
+.d-name { font-size: 20px; font-weight: 700; line-height: 1.2; }
+
+.d-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+
+/* active speed context strip */
+.speed-strip {
+  background: var(--acc-lo);
+  border: 1px solid rgba(59,130,246,.2);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.speed-strip .ss-v {
+  font-size: 15px; font-weight: 700; color: var(--accent); white-space: nowrap;
+}
+.speed-strip .ss-r { font-size: 11px; color: #93c5fd; }
+.speed-strip .ss-hint { margin-left: auto; font-size: 10px; color: var(--dim); font-style: italic; white-space: nowrap; }
+
+/* result grid */
+.res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 14px; }
+.tile.wide { grid-column: span 2; }
+.tile.hi { border-color: rgba(59,130,246,.3); background: rgba(59,130,246,.07); }
+.tile-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); margin-bottom: 5px; }
+.tile-val { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.tile-val.blue { color: #93c5fd; font-size: 17px; }
+.tile-val.amber { color: var(--amber); }
+.tile-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* note */
+.note {
+  background: rgba(245,158,11,.05);
+  border: 1px solid rgba(245,158,11,.2);
+  border-radius: var(--r);
+  padding: 11px 14px;
+  display: flex; gap: 9px; align-items: flex-start;
+}
+.note svg { width: 13px; height: 13px; color: var(--amber); flex-shrink: 0; margin-top: 2px; }
+.note-text { font-size: 11.5px; color: #fcd34d; line-height: 1.55; }
+.note-text strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--amber); margin-bottom: 2px; }
+
+@media (max-width: 640px) {
+  .left { width: 220px; }
+  .d-name { font-size: 16px; }
+  .res-grid { grid-template-columns: 1fr; }
+  .tile.wide { grid-column: span 1; }
+}
 </style>
 </head>
 <body>
- 
-<div class="hstripe"></div>
-<div class="header">
-  <div class="hinner">
-    <div class="hicon">
-      <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="25,3 47,15 47,35 25,47 3,35 3,15" fill="#F5C400" stroke="#0D0D0D" stroke-width="2"/>
-        <text x="25" y="30" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="13" fill="#0D0D0D">IRC</text>
-      </svg>
-    </div>
-    <div class="htxt">
-      <h1>IRC 67-2022 Road Sign Assistant</h1>
-      <p>Comprehensive Specifications · Sizing · Sheeting · Gantries · Road Classification</p>
-    </div>
-    <div class="hbadge">Ministry of Road<br>Transport &amp; Highways<br><span style="opacity:0.5;font-size:0.6rem">IRC 67 : 2022</span></div>
-  </div>
-</div>
- 
-<!-- TAB BAR -->
-<div style="background:var(--D2);border-bottom:1px solid var(--MID)">
-  <div class="tab-bar" style="max-width:1100px;margin:0 auto;display:flex;padding:0 1rem">
-    <button class="tab-btn active" onclick="switchTab('calc',this)">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/></svg>
-      Sign Calculator
-    </button>
-    <button class="tab-btn" onclick="switchTab('road',this)">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l4-10 4 5 3-3 4 8"/><path d="M3 17h18"/></svg>
-      Road Type Reference
-    </button>
-    <button class="tab-btn" onclick="switchTab('mat',this)">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-      Materials &amp; Installation
-    </button>
-  </div>
-</div>
- 
-<!-- ════════════════════════════════════
-     TAB 1 — SIGN CALCULATOR
-════════════════════════════════════ -->
-<div id="tab-calc" class="tab-panel active">
-<div class="wrap">
- 
-  <div class="card">
-    <div class="chdr pri">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/></svg>
-      Sign &amp; Support Calculator
-    </div>
-    <div class="cbody">
-      <div class="frow col3">
-        <div class="fg">
-          <label class="flabel">Search IRC Sign Board</label>
-          <div class="swrap">
-            <input type="text" id="signSearch" class="sinp" placeholder="Type name or code — e.g. R-1, C-34, Stop…" autocomplete="off" spellcheck="false">
-            <svg class="sarrow" id="sArrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            <div class="sdd" id="sDd" role="listbox"></div>
-          </div>
-          <input type="hidden" id="hT" value="">
-          <input type="hidden" id="hN" value="">
-        </div>
-        <div class="fg">
-          <label class="flabel">Design Speed of Road</label>
-          <select class="nsel" id="spd">
-            <option value="50">Up to 50 kmph</option>
-            <option value="65">51 – 65 kmph</option>
-            <option value="80">66 – 80 kmph</option>
-            <option value="120">81 – 120 kmph</option>
-            <option value="150">Expressways (&gt;120 kmph)</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label class="flabel">Mounting Type</label>
-          <select class="nsel" id="mnt">
-            <option value="shoulder">Shoulder / Post Mounted</option>
-            <option value="gantry">Overhead / Gantry / Cantilever</option>
-          </select>
-        </div>
-      </div>
-      <button class="btn" onclick="calcSpecs()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-        Generate Specifications
-      </button>
- 
-      <div id="calcResult" class="rbox">
-        <div class="rhdr" id="cRhdr">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-          <span id="cRtxt">Specifications — IRC 67-2022</span>
-        </div>
-        <div id="cRout" class="rgrid"></div>
-      </div>
-    </div>
-  </div>
- 
-</div><!-- /wrap -->
-</div><!-- /tab-calc -->
- 
-<!-- ════════════════════════════════════
-     TAB 2 — ROAD TYPE REFERENCE
-════════════════════════════════════ -->
-<div id="tab-road" class="tab-panel">
-<div class="wrap">
- 
-  <!-- SEARCH PANEL -->
-  <div class="card">
-    <div class="chdr pri">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Road Type &amp; Sign Specification Lookup
-    </div>
-    <div class="cbody">
-      <p style="font-size:0.84rem;color:var(--MT);margin-bottom:1.1rem">Select a road type <b style="color:var(--W)">or</b> enter a design speed to find sign sizes, sheeting class, background colours, and speed limits.</p>
- 
-      <!-- Method A: Road Type pills -->
-      <div class="fg" style="margin-bottom:1rem">
-        <label class="flabel">Select Road Type</label>
-        <div class="pill-row" id="roadPills" style="margin-top:0.4rem;margin-bottom:0">
-          <button class="pill" onclick="selectRoad('expressway',this)">Expressway</button>
-          <button class="pill" onclick="selectRoad('nh',this)">National Highway</button>
-          <button class="pill" onclick="selectRoad('sh',this)">State Highway</button>
-          <button class="pill" onclick="selectRoad('mdr',this)">Major District Road</button>
-          <button class="pill" onclick="selectRoad('odr',this)">Other District Road</button>
-          <button class="pill" onclick="selectRoad('vr',this)">Village Road</button>
-          <button class="pill" onclick="selectRoad('urban',this)">Urban / Town Road</button>
-        </div>
-      </div>
- 
-      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.1rem">
-        <div style="flex:1;height:1px;background:var(--MID)"></div>
-        <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--MT)">or search by speed</span>
-        <div style="flex:1;height:1px;background:var(--MID)"></div>
-      </div>
- 
-      <!-- Method B: Speed lookup -->
-      <div class="road-search-row">
-        <div class="fg">
-          <label class="flabel">Design Speed (kmph)</label>
-          <input type="number" id="spdInput" class="sinp" placeholder="e.g. 100" min="20" max="160" style="cursor:text">
-        </div>
-        <div class="fg" style="justify-content:flex-end;padding-top:1.1rem">
-          <button class="btn" onclick="lookupBySpeed()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Look Up
-          </button>
-        </div>
-      </div>
- 
-      <!-- Speed lookup result -->
-      <div id="spdResult" class="hidden"></div>
-    </div>
-  </div>
- 
-  <!-- Road spec display -->
-  <div id="roadSpecOut" class="hidden"></div>
- 
-</div>
-</div>
- 
-<!-- ════════════════════════════════════
-     TAB 3 — MATERIALS & INSTALLATION
-════════════════════════════════════ -->
-<div id="tab-mat" class="tab-panel">
-<div class="wrap">
-  <div class="g2">
-    <div class="card">
-      <div class="chdr sec">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-        Post &amp; Structure Materials
-      </div>
-      <div class="twrap">
-        <table>
-          <thead><tr><th>Component</th><th>IRC Specification</th></tr></thead>
-          <tbody>
-            <tr><td>Sign Board Substrate</td><td>Aluminium 1.5 – 2.0 mm <em>or</em> ACM 3.0 – 4.0 mm</td></tr>
-            <tr><td>Posts — Small Boards</td><td>Hot-Dip GI Pipe 50 NB or 75 NB / MS Hollow Section</td></tr>
-            <tr><td>Large Boards (&gt;0.9 m²)</td><td>Minimum <b>two posts</b> (GI/MS) to resist wind-induced twist</td></tr>
-            <tr><td>Gantries / Cantilevers</td><td>Heavy MS structural truss — Hot-Dip Galvanized</td></tr>
-            <tr><td>Corrosion Protection</td><td class="tg">Hot-Dip Galvanization preferred over painting (longer IRC service life)</td></tr>
-            <tr><td>Foundation Depth</td><td>Min. 1.0 m for shoulder posts; per structural design for gantries</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="card">
-      <div class="chdr sec">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3l-5.6 5.6a2.828 2.828 0 0 1-4 0l-9.9-9.9a2.828 2.828 0 0 1 0-4l5.6-5.6a2.828 2.828 0 0 1 4 0l9.9 9.9a2.828 2.828 0 0 1 0 4Z"/></svg>
-        Retroreflective Sheeting Classes
-      </div>
-      <div class="twrap">
-        <table>
-          <thead><tr><th>Class</th><th>ASTM Type</th><th>Road Category</th><th>Warranty</th></tr></thead>
-          <tbody>
-            <tr><td class="ty"><b>Class A</b></td><td>Type I (Engineering Grade)</td><td>Village Roads / ODR</td><td>5 years</td></tr>
-            <tr><td class="ty"><b>Class B</b></td><td>Type IV (High Intensity)</td><td>MDR / Work Zones</td><td>7 years</td></tr>
-            <tr><td class="ty"><b>Class C</b></td><td class="tc">Type XI (Micro-Prismatic)</td><td class="tc">Expressways, NH, SH — Mandatory</td><td class="tc">10 years</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
- 
-  <div class="card">
-    <div class="chdr sec">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14"/><path d="m18 13-6-6-6 6"/><path d="M12 7v14"/></svg>
-      Vertical &amp; Lateral Clearances
-    </div>
+
+<!-- HEADER -->
+<header>
+  <div class="brand">
+    <div class="brand-badge">IRC 67:2022</div>
     <div>
-      <div class="ii"><div class="idot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14"/><path d="m18 13-6-6-6 6"/><path d="M12 7v14"/></svg></div><div class="itxt"><strong>Urban Roads (with Kerbs)</strong><span>Bottom of sign to top of kerb: <b>2.1 m – 2.5 m</b>.</span></div></div>
-      <div class="ii"><div class="idot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg></div><div class="itxt"><strong>Rural Roads (no Kerbs)</strong><span>Bottom of sign to pavement crown: <b>2.0 m – 2.5 m</b>.</span></div></div>
-      <div class="ii"><div class="idot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6L12 2L16 6"/><path d="M12 2V22"/></svg></div><div class="itxt"><strong>Overhead / Gantry Signs</strong><span>Minimum <b>5.5 m vertical clearance</b> over full carriageway width.</span></div></div>
-      <div class="ii"><div class="idot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" x2="22" y1="12" y2="12"/></svg></div><div class="itxt"><strong>Lateral Clearance</strong><span>Extreme edge of sign: <b>0.6 m – 3.0 m</b> from earthen shoulder.</span></div></div>
-      <div class="ii"><div class="idot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div class="itxt"><strong>Sign Face Orientation</strong><span>Perpendicular to road ±5°. Retroreflective face must face oncoming traffic directly.</span></div></div>
-      <div class="ii"><div class="idot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div><div class="itxt"><strong>Bollard-Mounted (Urban Only)</strong><span>Smaller 300 mm diameter boards permitted on bollards at traffic signals in dense urban areas.</span></div></div>
+      <div class="brand-title">Road Sign Assistant</div>
+      <div class="brand-sub">Code of Practice for Road Signs — India</div>
     </div>
   </div>
- 
-  <div class="card">
-    <div class="chdr sec">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
-      Informatory Sign Background Colours
+  <div class="search-wrap">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    <input id="searchInput" type="text" placeholder="Search sign name or code…" autocomplete="off" spellcheck="false">
+  </div>
+</header>
+
+<!-- SPEED BAR -->
+<div id="speedBar">
+  <div class="sb-lbl">Design Speed</div>
+  <div class="speed-pills" id="speedPills"></div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <div class="left">
+    <div class="left-hdr">
+      All Signs
+      <span class="sign-count" id="signCount"></span>
     </div>
-    <div class="twrap">
-      <table>
-        <thead><tr><th>Road Type</th><th>Background</th><th>Legend / Border</th><th>Notes</th></tr></thead>
-        <tbody>
-          <tr><td>Expressways</td><td><span style="color:#93C5FD;font-weight:600">■ Blue</span></td><td>White</td><td>Class C sheeting mandatory</td></tr>
-          <tr><td>National / State Highways</td><td><span style="color:#4ade80;font-weight:600">■ Green</span></td><td>White</td><td>Class C sheeting mandatory</td></tr>
-          <tr><td>Major District Roads</td><td><span style="color:#4ade80;font-weight:600">■ Green</span></td><td>White</td><td>Class B or C sheeting</td></tr>
-          <tr><td>Village / Other District Roads</td><td><span style="color:var(--W);font-weight:600">■ White</span></td><td>Black</td><td>Class A sheeting minimum</td></tr>
-          <tr><td>Tourism / Heritage Signs</td><td><span style="color:#C084FC;font-weight:600">■ Brown</span></td><td>White</td><td>Special tourism category</td></tr>
-        </tbody>
-      </table>
+    <div id="signList"></div>
+  </div>
+
+  <div class="right">
+
+    <div class="empty" id="emptyState">
+      <div class="empty-icon">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+      </div>
+      <p>Pick a speed above, then select a sign</p>
+      <small>All dimensions update automatically</small>
+    </div>
+
+    <div class="detail" id="detailPane">
+
+      <div class="d-header">
+        <div class="shape-wrap" id="shapeWrap"></div>
+        <div class="d-meta">
+          <div class="d-tags">
+            <span class="tag tag-code" id="dCode"></span>
+            <span class="tag tag-cat"  id="dCat"></span>
+          </div>
+          <div class="d-name" id="dName"></div>
+        </div>
+      </div>
+
+      <div class="d-body">
+
+        <!-- Active speed strip -->
+        <div class="speed-strip">
+          <div>
+            <div class="ss-v" id="ssSpeed">—</div>
+            <div class="ss-r" id="ssRoad">—</div>
+          </div>
+          <div class="ss-hint">← Change speed in the bar above</div>
+        </div>
+
+        <!-- Result grid -->
+        <div class="res-grid">
+
+          <div class="tile hi">
+            <div class="tile-lbl">Board Size</div>
+            <div class="tile-val blue" id="rSize">—</div>
+          </div>
+
+          <div class="tile">
+            <div class="tile-lbl">Shape</div>
+            <div class="tile-val" id="rShape">—</div>
+          </div>
+
+          <div class="tile">
+            <div class="tile-lbl">Border / Stroke Width</div>
+            <div class="tile-val" id="rBorder">—</div>
+          </div>
+
+          <div class="tile">
+            <div class="tile-lbl">Siting Distance</div>
+            <div class="tile-val" id="rSiting">—</div>
+          </div>
+
+          <div class="tile wide" id="infoTile" style="display:none">
+            <div class="tile-lbl">Letter x-height (Informatory Boards)</div>
+            <div class="tile-val" id="rLetterHt">—</div>
+            <div class="tile-sub">Lower case / Upper case — board width scales to fit text</div>
+          </div>
+
+          <div class="tile wide">
+            <div class="tile-lbl">Retro-Reflective Sheeting — Table 6.1</div>
+            <div class="tile-val amber" id="rSheeting">—</div>
+            <div class="tile-sub" id="rRoad">—</div>
+          </div>
+
+        </div>
+
+        <div class="note">
+          <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+          <div class="note-text">
+            <strong>IRC 67:2022 Mandate</strong>
+            Dimensions per Table 8.1 / Table 9.1. Sheeting: IS:15809. Substrate: 1.5–2 mm Al or 3–4 mm ACM. Class C: 10-yr warranty · Class B: 7 yr · Class A: 5 yr. Ground-mounted bottom edge: 2–2.5 m above crown. Overhead clearance: ≥ 5.5 m.
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
-</div>
-</div>
- 
-<!-- ═══════════════════════  JAVASCRIPT  ═══════════════════════ -->
+</main>
+
 <script>
-// ══════════════════════════════════════════════════════
-// SIGN DATABASE (complete IRC 67-2022)
-// ══════════════════════════════════════════════════════
-const DB=[
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-1", name:"Stop",type:"stop"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-2", name:"Give Way",type:"giveway"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-3", name:"No Entry / Straight Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-4", name:"One Way",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-5", name:"Vehicles Prohibited in Both Directions",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-6", name:"Right Turn Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-7", name:"Left Turn Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-8", name:"U-Turn Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-9", name:"Overtaking Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-10",name:"Horn Prohibited (No Horn Zone)",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-11",name:"No Parking",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-12",name:"No Stopping or Standing",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-13",name:"Maximum Speed Limit",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-14",name:"Vehicle Width Limit",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-15",name:"Vehicle Height Limit",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-16",name:"Vehicle Length Limit",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-17",name:"Axle Load Limit",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-18",name:"Compulsory Keep Left",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-19",name:"Compulsory Ahead Only",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-20",name:"Compulsory Turn Right",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-21",name:"Compulsory Turn Left",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-22",name:"Compulsory Ahead or Turn Right",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-23",name:"Compulsory Ahead or Turn Left",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-24",name:"Compulsory Keep Right",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-25",name:"Compulsory Cycle Track",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-26",name:"Compulsory Sound Horn",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-27",name:"Pedestrians Only",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-28",name:"End of All Prohibitions / Restriction End",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-29",name:"Trucks Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-30",name:"Motor Vehicles Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-31",name:"Tractor Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-32",name:"Cycle Rickshaw Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-33",name:"Bicycle Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-34",name:"Pedestrians Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-35",name:"Animal Drawn Vehicle Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-36",name:"Hand Cart Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-37",name:"Bullock Carts Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-38",name:"Buses Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-39",name:"Two Wheelers Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-40",name:"Cars Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-41",name:"Auto Rickshaw Not Allowed",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-42",name:"Construction Vehicles Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-43",name:"Articulated Vehicles Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-44",name:"Free Left Prohibited (Signalised Intersection)",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-45",name:"Right Turn and U-Turn Prohibited",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-46",name:"Priority to Vehicles from Opposite Direction",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-47",name:"Minimum Speed Limit (Compulsory)",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-48",name:"Pass Either Side",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-49",name:"Busway — Buses Only",type:"mandatory"},
-  {g:"Mandatory / Regulatory (R-Series)",code:"R-50",name:"Stop for Police Check",type:"mandatory"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-1", name:"Right Hair Pin Bend",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-2", name:"Left Hair Pin Bend",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-3", name:"Right Reverse Bend",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-4", name:"Left Reverse Bend",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-5", name:"Right Reverse Curve",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-6", name:"Left Reverse Curve",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-7", name:"Winding Road (Right First)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-8", name:"Winding Road (Left First)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-9", name:"Sharp Deviation to Right",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-10",name:"Sharp Deviation to Left",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-11",name:"Straight Road Ahead (End of Curve)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-12",name:"Cross Road",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-13",name:"Y-Intersection (Right)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-14",name:"Y-Intersection (Left)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-15",name:"T-Intersection (Right)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-16",name:"T-Intersection (Left)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-17",name:"Staggered Intersection",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-18",name:"Major Road Ahead (Priority Intersection)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-19",name:"Roundabout Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-20",name:"Dangerous Dip",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-21",name:"Hump or Rough Road",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-22",name:"Barrier Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-23",name:"Loose Gravel",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-24",name:"Falling Rocks (Right Side)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-25",name:"Falling Rocks (Left Side)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-26",name:"Pedestrian Crossing Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-27",name:"School Ahead (Children Crossing)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-28",name:"Men at Work",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-29",name:"Cattle / Animal Crossing",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-30",name:"Steep Ascent",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-31",name:"Steep Descent",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-32",name:"Narrow Road Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-33",name:"Road Widens Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-34",name:"Narrow Bridge Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-35",name:"Slippery Road",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-36",name:"Cycle Crossing",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-37",name:"Ferry Crossing",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-38",name:"Quayside or River Bank",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-39",name:"Opening or Swing Bridge",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-40",name:"Unguarded Railway Crossing (within 50 m)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-41",name:"Unguarded Railway Crossing (within 300 m)",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-42",name:"Guarded Railway Crossing",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-43",name:"Forewarning — Unguarded Level Crossing",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-44",name:"Forewarning — Guarded Level Crossing",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-45",name:"Ice Road",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-46",name:"Cross Wind",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-47",name:"Traffic Signal Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-48",name:"Speed Breaker Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-49",name:"Accident Prone Zone / Crash Prone Area",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-50",name:"Overhead Electric Cable",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-51",name:"Wild Animals",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-52",name:"Tunnel Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-53",name:"Reduced Carriageway Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-54",name:"Gap in Median Ahead",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-55",name:"Queues Likely",type:"cautionary"},
-  {g:"Cautionary / Warning (C-Series)",code:"C-56",name:"U-Turn Ahead",type:"cautionary"},
-  {g:"Informatory / Guide (I-Series)",code:"I-1", name:"Advance Direction Sign (Junction)",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-2", name:"Advance Direction Sign (Route Bifurcation)",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-3", name:"Destination / Distance Sign",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-4", name:"Route Marker (National Highway)",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-5", name:"Route Marker (State Highway)",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-6", name:"Route Marker (Major District Road)",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-7", name:"Kilometre Stone",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-8", name:"Location Sign (State / District Boundary)",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-9", name:"Place Identification Sign",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-10",name:"Public Telephone",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-11",name:"Petrol Pump / Filling Station",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-12",name:"Hospital",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-13",name:"First Aid Post",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-14",name:"Eating Place / Restaurant",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-15",name:"Resting Place / Motel",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-16",name:"No Through Road",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-17",name:"Parking Both Sides",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-18",name:"Parking Right Side",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-19",name:"Parking Left Side",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-20",name:"Parking for Two Wheelers",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-21",name:"Bus Stop",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-22",name:"Light Refreshment",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-23",name:"Weigh Bridge Ahead",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-24",name:"Toll Plaza Ahead",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-25",name:"Filling Station (LPG / CNG)",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-26",name:"Automobile Repair Workshop",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-27",name:"Police Station",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-28",name:"Post Office",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-29",name:"River / Water Body Ahead",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-30",name:"Tourist Information Centre",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-31",name:"Fire Station",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-32",name:"Walking Track",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-33",name:"Cycle Track",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-34",name:"Overhead Electric Cable Warning",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-35",name:"Overhead Bridge",type:"informatory"},
-  {g:"Informatory / Guide (I-Series)",code:"I-36",name:"Truck Lay-by",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-37",name:"Emergency SOS Phone",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-38",name:"Pedestrian Subway",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-39",name:"Foot Over Bridge (FOB)",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-40",name:"Taxi Stand",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-41",name:"Auto Stand",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-42",name:"Metro Station",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-43",name:"Railway Station",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-44",name:"Toilet",type:"facility"},
-  {g:"Informatory / Guide (I-Series)",code:"I-45",name:"U-Turn Facility Ahead",type:"informatory"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-1",name:"Road Closed (Work Zone)",type:"cautionary"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-2",name:"Detour Ahead",type:"cautionary"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-3",name:"Flagger / Traffic Controller Ahead",type:"cautionary"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-4",name:"Lane Closed Ahead",type:"cautionary"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-5",name:"Road Work Ahead",type:"cautionary"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-6",name:"Temporary Speed Limit",type:"mandatory"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-7",name:"End of Work Zone",type:"informatory"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-8",name:"Merge Right / Left Ahead",type:"cautionary"},
-  {g:"Work Zone / Temporary (W-Series)",code:"W-9",name:"One Lane Two Way Traffic Ahead",type:"cautionary"},
+// ── SPEED TIERS ──────────────────────────────────────────────
+const SPEEDS = [
+  { val:50,  label:"≤ 50 km/h",    road:"Village Roads (VR) / Local" },
+  { val:65,  label:"51–65 km/h",   road:"City Arterial / ODR" },
+  { val:80,  label:"66–80 km/h",   road:"MDR / State Highways (SH)" },
+  { val:100, label:"81–100 km/h",  road:"National Highways (NH)" },
+  { val:120, label:"101–120 km/h", road:"High-Speed NH" },
+  { val:130, label:"> 120 km/h",   road:"Expressways" },
 ];
- 
-const GROUPS={};
-DB.forEach(s=>{if(!GROUPS[s.g])GROUPS[s.g]=[];GROUPS[s.g].push(s);});
- 
-// ── TAB SWITCH ──
-function switchTab(id,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
+
+// ── DATABASE ─────────────────────────────────────────────────
+const DB = [
+  // Mandatory
+  {g:"Mandatory / Regulatory",  code:"R-1",  name:"Stop",                                 type:"stop"},
+  {g:"Mandatory / Regulatory",  code:"R-2",  name:"Give Way",                             type:"giveway"},
+  {g:"Mandatory / Regulatory",  code:"R-3",  name:"No Entry / Straight Prohibited",       type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-4",  name:"One Way (Prohibitory)",                type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-5",  name:"Vehicles Prohibited Both Directions",  type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-6",  name:"Right Turn Prohibited",                type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-7",  name:"Left Turn Prohibited",                 type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-8",  name:"U-Turn Prohibited",                    type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-9",  name:"Overtaking Prohibited",                type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-10", name:"Horn Prohibited",                      type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-11", name:"No Parking",                           type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-12", name:"No Stopping or Standing",              type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-13", name:"Maximum Speed Limit",                  type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-14", name:"Width Limit",                          type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-15", name:"Height Limit",                         type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-16", name:"Length Limit",                         type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-17", name:"Axle Load Limit",                      type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-18", name:"Compulsory Keep Left",                 type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-19", name:"Compulsory Ahead Only",                type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-20", name:"Compulsory Turn Right",                type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-21", name:"Compulsory Turn Left",                 type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-22", name:"Compulsory Ahead or Turn Right",       type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-23", name:"Compulsory Ahead or Turn Left",        type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-24", name:"Compulsory Keep Right",                type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-25", name:"Compulsory Cycle Track",               type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-26", name:"Compulsory Sound Horn",                type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-27", name:"Pedestrians Only",                     type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-28", name:"Restriction Ends",                     type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-29", name:"Trucks Prohibited",                    type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-30", name:"Motor Vehicles Prohibited",            type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-31", name:"Tractor Prohibited",                   type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-32", name:"Cycle Rickshaw Prohibited",            type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-33", name:"Bicycle Prohibited",                   type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-34", name:"Pedestrians Prohibited",               type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-35", name:"Animal Drawn Vehicle Prohibited",      type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-36", name:"Hand Cart Prohibited",                 type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-37", name:"Bullock Carts Prohibited",             type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-38", name:"Buses Prohibited",                     type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-39", name:"Two Wheelers Prohibited",              type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-40", name:"Cars Prohibited",                      type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-41", name:"Auto Rickshaw Prohibited",             type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-42", name:"Construction Vehicles Prohibited",     type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-43", name:"Articulated Vehicles Prohibited",      type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-44", name:"Free Left Prohibited at Signal",       type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-45", name:"Right Turn and U-Turn Prohibited",     type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-46", name:"Priority to Opposite Direction",       type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-47", name:"Minimum Speed Limit",                  type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-48", name:"Pass Either Side",                     type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-49", name:"Buses Only / Busway",                  type:"mandatory"},
+  {g:"Mandatory / Regulatory",  code:"R-50", name:"Stop for Police Check",                type:"mandatory"},
+  // Cautionary
+  {g:"Cautionary / Warning",    code:"C-1",  name:"Right Hair Pin Bend",                  type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-2",  name:"Left Hair Pin Bend",                   type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-3",  name:"Right Reverse Bend",                   type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-4",  name:"Left Reverse Bend",                    type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-5",  name:"Right Hand Curve",                     type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-6",  name:"Left Hand Curve",                      type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-7",  name:"Series of Bends",                      type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-8",  name:"Steep Ascent",                         type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-9",  name:"Steep Descent",                        type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-10", name:"Narrow Road Ahead",                    type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-11", name:"Narrow Bridge Ahead",                  type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-12", name:"Cross Road",                           type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-13", name:"Y-Intersection",                       type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-14", name:"Side Road",                            type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-15", name:"T-Intersection",                       type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-16", name:"Roundabout Ahead",                     type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-17", name:"Staggered Intersection",               type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-18", name:"Major Road Ahead",                     type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-19", name:"Merging Traffic Ahead",                type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-20", name:"Dangerous Dip",                        type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-21", name:"Hump or Rough Road",                   type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-22", name:"Barrier Ahead",                        type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-23", name:"Falling Rocks",                        type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-24", name:"Cattle Crossing",                      type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-25", name:"Wild Animal Crossing",                 type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-26", name:"Pedestrian Crossing",                  type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-27", name:"School Ahead",                         type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-28", name:"Men at Work",                          type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-29", name:"Slippery Road",                        type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-30", name:"Loose Gravel",                         type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-31", name:"Cross Winds",                          type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-32", name:"Low Flying Aircraft / Runway",         type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-33", name:"Tunnel Ahead",                         type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-34", name:"Ferry",                                type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-35", name:"Opening Bridge",                       type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-36", name:"Quay Side or River Bank",              type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-37", name:"Overhead Cables",                      type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-38", name:"Soft Verge",                           type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-39", name:"Road Widens",                          type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-40", name:"Unguarded Railway Crossing",           type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-41", name:"Tram Crossing",                        type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-42", name:"Guarded Railway Crossing",             type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-43", name:"Cycle Crossing Ahead",                 type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-44", name:"Differently-Abled Persons",            type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-45", name:"Queues Likely",                        type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-46", name:"Crash Prone Area Ahead",               type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-47", name:"Danger Warning",                       type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-48", name:"Speed Breaker Ahead",                  type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-49", name:"Rumble Strip Ahead",                   type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-50", name:"Playground Ahead",                     type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-51", name:"Reduced Carriageway",                  type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-52", name:"Lane Closure Ahead",                   type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-53", name:"Two-Way Traffic Ahead",                type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-54", name:"Gap in Median Ahead",                  type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-55", name:"270 Degree Loop",                      type:"cautionary"},
+  {g:"Cautionary / Warning",    code:"C-56", name:"U-Turn Ahead",                         type:"cautionary"},
+  // Informatory
+  {g:"Informatory / Guide",     code:"I-1",  name:"Advance Direction Sign (Stack)",       type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-2",  name:"Advance Direction Sign (Map)",         type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-3",  name:"Destination Sign",                     type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-4",  name:"NH Route Marker",                      type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-5",  name:"SH Route Marker",                      type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-6",  name:"Place Identification",                 type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-7",  name:"Route Confirmatory / Reassurance",     type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-8",  name:"Truck Lay-by",                         type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-9",  name:"Toll Booth Ahead",                     type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-10", name:"Weigh Bridge Ahead",                   type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-11", name:"Petrol Pump / Filling Station",        type:"facility"},
+  {g:"Informatory / Guide",     code:"I-12", name:"Hospital",                             type:"facility"},
+  {g:"Informatory / Guide",     code:"I-13", name:"First Aid Post",                       type:"facility"},
+  {g:"Informatory / Guide",     code:"I-14", name:"Eating Place",                         type:"facility"},
+  {g:"Informatory / Guide",     code:"I-15", name:"Light Refreshment",                    type:"facility"},
+  {g:"Informatory / Guide",     code:"I-16", name:"Resting Place",                        type:"facility"},
+  {g:"Informatory / Guide",     code:"I-17", name:"Parking",                              type:"facility"},
+  {g:"Informatory / Guide",     code:"I-18", name:"Parking for Disabled",                 type:"facility"},
+  {g:"Informatory / Guide",     code:"I-19", name:"Bus Stop",                             type:"facility"},
+  {g:"Informatory / Guide",     code:"I-20", name:"Taxi Stand",                           type:"facility"},
+  {g:"Informatory / Guide",     code:"I-21", name:"Auto Rickshaw Stand",                  type:"facility"},
+  {g:"Informatory / Guide",     code:"I-22", name:"Cycle Stand",                          type:"facility"},
+  {g:"Informatory / Guide",     code:"I-23", name:"Railway Station",                      type:"facility"},
+  {g:"Informatory / Guide",     code:"I-24", name:"Metro Station",                        type:"facility"},
+  {g:"Informatory / Guide",     code:"I-25", name:"Pedestrian Subway / FOB",              type:"facility"},
+  {g:"Informatory / Guide",     code:"I-26", name:"Toilet",                               type:"facility"},
+  {g:"Informatory / Guide",     code:"I-27", name:"Repair Facilities",                    type:"facility"},
+  {g:"Informatory / Guide",     code:"I-28", name:"Police Station",                       type:"facility"},
+  {g:"Informatory / Guide",     code:"I-29", name:"No Through Road",                      type:"facility"},
+  {g:"Informatory / Guide",     code:"I-30", name:"U-Turn Facility Ahead",                type:"informatory"},
+  {g:"Informatory / Guide",     code:"I-31", name:"Emergency SOS Phone",                  type:"facility"},
+];
+
+// ── SPECS CALC ───────────────────────────────────────────────
+function getSpecs(type, spd) {
+  if (type === "stop") {
+    return {
+      size:   spd<=50 ? "750 mm" : spd<=65 ? "900 mm" : "1200 mm",
+      shape:  "Octagonal",
+      css:    "s-octagon",
+      border: spd<=50 ? "65 mm" : spd<=65 ? "75 mm" : "100 mm",
+      siting: "At or before stop line",
+      xh:     null
+    };
+  }
+  if (type === "giveway") {
+    return {
+      size:   spd<=65 ? "600 mm (side)" : spd<=80 ? "900 mm (side)" : "1200 mm (side)",
+      shape:  "Inverted Equilateral Triangle",
+      css:    "s-inv-tri",
+      border: spd<=65 ? "50 mm" : spd<=80 ? "75 mm" : "100 mm",
+      siting: "At give-way line",
+      xh:     null
+    };
+  }
+  if (type === "mandatory") {
+    let sz, bdr;
+    if      (spd<=65)  { sz="600 mm dia";  bdr="50 mm"; }
+    else if (spd<=80)  { sz="750 mm dia";  bdr="60 mm"; }
+    else if (spd<=100) { sz="900 mm dia";  bdr="75 mm"; }
+    else if (spd<=120) { sz="1200 mm dia"; bdr="100 mm"; }
+    else               { sz="1500 mm dia"; bdr="125 mm"; }
+    return { size:sz, shape:"Circular", css:"s-circle", border:bdr, siting:"At restriction point", xh:null };
+  }
+  if (type === "cautionary") {
+    let sz, bdr, sit;
+    if      (spd<=50)  { sz="600 mm (side)";  bdr="45 mm"; sit="45 m ahead of hazard"; }
+    else if (spd<=65)  { sz="750 mm (side)";  bdr="60 mm"; sit="45–110 m ahead"; }
+    else if (spd<=80)  { sz="900 mm (side)";  bdr="70 mm"; sit="110–180 m ahead"; }
+    else if (spd<=120) { sz="1200 mm (side)"; bdr="90 mm"; sit="180–245 m ahead"; }
+    else               { sz="1500 mm (side)"; bdr="110 mm";sit="245–305 m ahead"; }
+    return { size:sz, shape:"Equilateral Triangle", css:"s-triangle", border:bdr, siting:sit, xh:null };
+  }
+  // informatory / facility
+  let xh;
+  if      (spd<=50)  xh = "70 mm / 100 mm";
+  else if (spd<=65)  xh = "100 mm / 140 mm";
+  else if (spd<=80)  xh = "140 mm / 175 mm";
+  else if (spd<=100) xh = "215 mm / 300 mm";
+  else if (spd<=120) xh = "305 mm / 425 mm";
+  else               xh = "340 mm / 475 mm";
+  return { size:"Scales to text", shape:"Rectangular", css:"s-rect", border:"Per design", siting:"Per direction sign rules", xh };
 }
- 
-// ── SIGN DROPDOWN ──
-const inp=document.getElementById('signSearch'),ddEl=document.getElementById('sDd'),arrw=document.getElementById('sArrow');
-const hT=document.getElementById('hT'),hN=document.getElementById('hN');
-let hiIdx=-1;
- 
-function hiText(txt,q){
-  if(!q)return txt;
-  const i=txt.toLowerCase().indexOf(q.toLowerCase());
-  if(i<0)return txt;
-  return txt.slice(0,i)+'<mark>'+txt.slice(i,i+q.length)+'</mark>'+txt.slice(i+q.length);
+
+function getSheeting(spd) {
+  if (spd<=50) return { cls:"Class A — Type I (Engineering Grade)",         road:"Village Roads (VR) / ODR",                    w:"5-year warranty" };
+  if (spd<=80) return { cls:"Class B — Type IV (High Intensity Prismatic)", road:"MDR / State Highways (SH) / Urban Arterials", w:"7-year warranty" };
+  return        { cls:"Class C — Type XI Micro-Prismatic (Mandatory)",      road:"National Highways / Expressways",             w:"10-year warranty — IS:15809" };
 }
-function renderDD(q){
-  ddEl.innerHTML='';const lq=q.toLowerCase().trim();
-  Object.keys(GROUPS).forEach(gk=>{
-    const signs=lq?GROUPS[gk].filter(s=>s.name.toLowerCase().includes(lq)||s.code.toLowerCase().includes(lq)):GROUPS[gk];
-    if(!signs.length)return;
-    const h=document.createElement('div');h.className='ghdr';h.textContent=gk;ddEl.appendChild(h);
-    signs.forEach(s=>{
-      const el=document.createElement('div');el.className='ddi';el.setAttribute('role','option');
-      el.dataset.type=s.type;el.dataset.code=s.code;el.dataset.name=s.name;
-      el.innerHTML=`<span class="dc">${s.code}</span><span class="dn">${hiText(s.name,q)}</span>`;
-      el.addEventListener('mousedown',e=>{e.preventDefault();pickSign(s);});
-      ddEl.appendChild(el);
+
+// ── STATE & DOM ───────────────────────────────────────────────
+let activeSpeed = 80;
+let current = null;
+
+const searchInput = document.getElementById('searchInput');
+const signListEl  = document.getElementById('signList');
+const signCountEl = document.getElementById('signCount');
+const emptyState  = document.getElementById('emptyState');
+const detailPane  = document.getElementById('detailPane');
+
+// ── BUILD SPEED PILLS ────────────────────────────────────────
+function buildPills() {
+  const wrap = document.getElementById('speedPills');
+  SPEEDS.forEach(sp => {
+    const b = document.createElement('button');
+    b.className = 'sp-btn' + (sp.val===activeSpeed?' active':'');
+    b.dataset.val = sp.val;
+    b.innerHTML = `<span class="sp-speed">${sp.label}</span><span class="sp-road">${sp.road}</span>`;
+    b.onclick = () => {
+      activeSpeed = sp.val;
+      document.querySelectorAll('.sp-btn').forEach(x => x.classList.toggle('active', +x.dataset.val===sp.val));
+      if (current) updateDetail();
+    };
+    wrap.appendChild(b);
+  });
+}
+
+// ── LIST ─────────────────────────────────────────────────────
+function hl(text, q) {
+  if (!q) return text;
+  return text.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<span class="hl">$1</span>');
+}
+
+function renderList(q="") {
+  signListEl.innerHTML = "";
+  const lq = q.toLowerCase().trim();
+  const groups = {};
+  DB.forEach(s => {
+    if (lq && !s.name.toLowerCase().includes(lq) && !s.code.toLowerCase().includes(lq)) return;
+    if (!groups[s.g]) groups[s.g] = [];
+    groups[s.g].push(s);
+  });
+  let total = 0;
+  Object.keys(groups).forEach(gk => {
+    total += groups[gk].length;
+    const lbl = document.createElement('div');
+    lbl.className = "grp-lbl";
+    lbl.textContent = gk;
+    signListEl.appendChild(lbl);
+    groups[gk].forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = "sign-btn" + (current && current.code===s.code ? " active" : "");
+      btn.innerHTML = `<span class="s-code">${hl(s.code,q)}</span><span class="s-name">${hl(s.name,q)}</span>`;
+      btn.onclick = () => { current=s; renderList(searchInput.value); updateDetail(); };
+      signListEl.appendChild(btn);
     });
   });
-  if(!ddEl.children.length){const d=document.createElement('div');d.className='nores';d.textContent='No matching signs found.';ddEl.appendChild(d);}
-  hiIdx=-1;
-}
-function pickSign(s){inp.value=s.code+' – '+s.name;hT.value=s.type;hN.value=s.code+' – '+s.name;inp.classList.add('sel');closeDD();}
-function openDD(){renderDD(inp.value);ddEl.classList.add('open');arrw.classList.add('open');}
-function closeDD(){ddEl.classList.remove('open');arrw.classList.remove('open');hiIdx=-1;}
-inp.addEventListener('focus',openDD);
-inp.addEventListener('input',()=>{hT.value='';hN.value='';inp.classList.remove('sel');renderDD(inp.value);ddEl.classList.add('open');arrw.classList.add('open');});
-inp.addEventListener('blur',()=>setTimeout(closeDD,160));
-inp.addEventListener('keydown',e=>{
-  const items=ddEl.querySelectorAll('.ddi');
-  if(e.key==='ArrowDown'){e.preventDefault();hiIdx=Math.min(hiIdx+1,items.length-1);updH(items);}
-  else if(e.key==='ArrowUp'){e.preventDefault();hiIdx=Math.max(hiIdx-1,0);updH(items);}
-  else if(e.key==='Enter'){e.preventDefault();if(hiIdx>=0&&items[hiIdx])items[hiIdx].dispatchEvent(new MouseEvent('mousedown'));}
-  else if(e.key==='Escape')closeDD();
-});
-function updH(items){items.forEach((el,i)=>el.classList.toggle('hi',i===hiIdx));if(items[hiIdx])items[hiIdx].scrollIntoView({block:'nearest'});}
- 
-// ── CALC SPECS ──
-function calcSpecs(){
-  const type=hT.value,label=hN.value||inp.value.trim();
-  const spd=parseInt(document.getElementById('spd').value);
-  const mnt=document.getElementById('mnt').value;
-  const rDiv=document.getElementById('calcResult'),rOut=document.getElementById('cRout');
-  const rHdr=document.getElementById('cRhdr'),rTxt=document.getElementById('cRtxt');
-  if(!type){
-    rDiv.className='rbox err';rHdr.className='rhdr err';rTxt.textContent='No Sign Selected';
-    rOut.innerHTML=`<div class="ri sp2"><span class="rl">Error</span><span class="rv">Please select a valid IRC sign from the dropdown before generating specifications.</span></div>`;
-    pop(rDiv);return;
+  if (!total) {
+    const d = document.createElement('div');
+    d.className = "no-res";
+    d.textContent = `No results for "${q}"`;
+    signListEl.appendChild(d);
   }
-  rDiv.className='rbox';rHdr.className='rhdr';rTxt.textContent='Specifications — '+label;
-  let shape='',dims='',placement='Edge clearance: 0.6 m – 3.0 m from earthen shoulder.',design='',postH='',postM='';
-  if(mnt==='gantry'){
-    postH='Minimum 5.5 m vertical clearance over entire carriageway width.';
-    postM='Heavy structural MS truss / cantilever. Mandatory Hot-Dip Galvanization. Wind load per IS 875.';
-    placement='Sign panel suspended directly above the lane(s) it applies to.';
-    if(type==='informatory'||type==='facility'){
-      shape='Large Rectangular Gantry Panel';
-      design='Green (NH/SH) or Blue (Expressway) background. Class C micro-prismatic sheeting mandatory.';
-      dims=spd<=80?'X-Height: 215–250 mm (panel size by text content)':'X-Height: 300–400 mm (Expressway gantry)';
-    }else{
-      shape='Oversized (upscaled by one class)';dims='Min. 1500 mm diameter / side';
-      design='Regulatory/Warning signs on gantries upscaled to maximum. Class C sheeting required.';
-    }
-  }else{
-    postH='Urban (kerb): 2.1–2.5 m above kerb top.\nRural (no kerb): 2.0–2.5 m above pavement crown.';
-    postM='Hot-Dip GI Pipe 50 NB / 75 NB or MS Hollow Section. Two posts if board area > 0.9 m².';
-    if(type==='stop'){
-      shape='Octagonal';design="Red background, white border 40 mm wide, 'STOP' in white Helvetica Bold. Class C on highways.";
-      placement='1.5 m – 6 m before stop line. Standalone post — no other sign on same post.';
-      dims=spd<=50?'750 mm H × 750 mm W':spd<=65?'900 mm H × 900 mm W':'1200 mm H × 1200 mm W';
-    }else if(type==='giveway'){
-      shape='Inverted Equilateral Triangle (Apex Down)';design='Red border 50 mm, white background. Corners rounded 20 mm.';
-      placement='At or just before the yield line at the intersection.';
-      dims=spd<=50?'600 × 600 × 600 mm':spd<=65?'750 × 750 × 750 mm':spd<=80?'900 × 900 × 900 mm':spd<=120?'1200 × 1200 × 1200 mm':'1500 × 1500 × 1500 mm';
-    }else if(type==='mandatory'){
-      shape='Circular';design='Prohibitory: red border, white bg, black symbol.\nCompulsory: blue bg, white symbol.';
-      dims=spd<=50?'600 mm dia':spd<=65?'750 mm dia':spd<=80?'900 mm dia':spd<=120?'1200 mm dia':'1500 mm dia';
-    }else if(type==='cautionary'){
-      shape='Equilateral Triangle (Apex Up)';design='Red border 50 mm, white bg, black symbol. Corners rounded 20 mm.';
-      if(spd<=50){dims='600 mm side ≈ 600×520 mm W×H';placement='~45 m before the hazard.';}
-      else if(spd<=65){dims='750 mm side ≈ 750×650 mm W×H';placement='45–110 m before the hazard.';}
-      else if(spd<=80){dims='900 mm side ≈ 900×780 mm W×H';placement='110–180 m before the hazard.';}
-      else if(spd<=120){dims='1200 mm side ≈ 1200×1040 mm W×H';placement='180–245 m before the hazard.';}
-      else{dims='1500 mm side ≈ 1500×1300 mm W×H';placement='245–305 m before the hazard.';}
-    }else if(type==='facility'){
-      shape='Rectangular';design='Blue background, white border, white symbols. Class B or C per road class.';
-      dims=spd<=65?'600×450 mm (W×H)':spd<=80?'800×600 mm (W×H)':'900×600 mm (W×H)';
-    }else{
-      shape='Rectangular (text determines panel size)';
-      design='Green bg — NH/SH.\nBlue bg — Expressways & Urban.\nWhite bg — Village Roads.';
-      placement='Advance direction signs: 500 m–1 km before intersection.';
-      dims=spd<=50?'X-Height: 100 mm':spd<=65?'X-Height: 125 mm':spd<=80?'X-Height: 150 mm':spd<=120?'X-Height: 215–250 mm':'X-Height: 300 mm';
-    }
+  signCountEl.textContent = total + " signs";
+}
+
+// ── DETAIL ───────────────────────────────────────────────────
+function updateDetail() {
+  if (!current) return;
+  emptyState.style.display = "none";
+  detailPane.classList.add("on");
+
+  const sp   = SPEEDS.find(s => s.val===activeSpeed);
+  const spec = getSpecs(current.type, activeSpeed);
+  const sh   = getSheeting(activeSpeed);
+
+  document.getElementById('dCode').textContent  = current.code;
+  document.getElementById('dCat').textContent   = current.g;
+  document.getElementById('dName').textContent  = current.name;
+  document.getElementById('shapeWrap').innerHTML = `<div class="${spec.css}"></div>`;
+
+  document.getElementById('ssSpeed').textContent = sp.label;
+  document.getElementById('ssRoad').textContent  = sp.road;
+
+  document.getElementById('rSize').textContent   = spec.size;
+  document.getElementById('rShape').textContent  = spec.shape;
+  document.getElementById('rBorder').textContent = spec.border;
+  document.getElementById('rSiting').textContent = spec.siting;
+
+  const infoTile = document.getElementById('infoTile');
+  if (spec.xh) {
+    infoTile.style.display = "";
+    document.getElementById('rLetterHt').textContent = spec.xh;
+  } else {
+    infoTile.style.display = "none";
   }
-  rOut.innerHTML=`
-    <div class="ri"><div class="rl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>Board Shape &amp; Dimensions</div><div class="rv" style="margin-bottom:0.25rem">${shape}</div><div class="rv big">${dims}</div></div>
-    <div class="ri"><div class="rl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Support Post / Structure</div><div class="rv">${postM}</div></div>
-    <div class="ri"><div class="rl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3h14"/><path d="m18 13-6-6-6 6"/><path d="M12 7v14"/></svg>Post Height / Clearance</div><div class="rv" style="white-space:pre-line">${postH}</div></div>
-    <div class="ri"><div class="rl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 12h20"/><path d="m8 6-6 6 6 6"/></svg>Siting &amp; Placement</div><div class="rv">${placement}</div></div>
-    <div class="ri sp2"><div class="rl"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>Design &amp; Colour Specifications</div><div class="rv" style="white-space:pre-line">${design}</div></div>`;
-  pop(rDiv);
+
+  document.getElementById('rSheeting').textContent = sh.cls;
+  document.getElementById('rRoad').textContent = sh.road + " · " + sh.w;
 }
- 
-// ══════════════════════════════════════════════════════
-// ROAD TYPE DATABASE
-// ══════════════════════════════════════════════════════
-const ROADS={
-  expressway:{
-    name:'Expressway',desc:'Fully access-controlled, divided carriageway. Highest category of road in India.',
-    color:'#2563EB',colorName:'Blue',speedRange:'≥ 100 kmph (design), typically 80–120 kmph (operating)',
-    mandCaut:'1200 – 1500 mm',info:'X-Height 300 mm (panel by text)',facility:'900×600 mm',
-    sheeting:'Class C (Micro-Prismatic, ASTM Type XI) — mandatory. 10-year warranty.',
-    infoBg:'Blue background, white legend',postH:'Gantry: min 5.5 m clearance',
-    speedLimits:'Max: 120 kmph (light vehicles) | 80 kmph (trucks/buses)',
-    tags:['Fully Access-Controlled','Divided 4–8 Lane','No At-Grade Intersections','Toll Operated','Class C Sheeting Mandatory'],
-    sizes:[{speed:'All speeds',mand:'1200–1500 mm dia',caut:'1200–1500 mm side',info:'X-height: 300 mm',facility:'900×600 mm'}]
-  },
-  nh:{
-    name:'National Highway (NH)',desc:'Primary road network connecting major cities and states across India. Maintained by NHAI/MoRTH.',
-    color:'#16A34A',colorName:'Green',speedRange:'80–100 kmph (rural), 60–80 kmph (urban stretches)',
-    mandCaut:'900 – 1200 mm',info:'X-Height 215–250 mm',facility:'800–900×600 mm',
-    sheeting:'Class C (Micro-Prismatic, ASTM Type XI) — mandatory. 10-year warranty.',
-    infoBg:'Green background, white legend',postH:'2.0–2.5 m (rural) | 2.1–2.5 m (urban kerbs)',
-    speedLimits:'Max: 100 kmph (4-lane) | 80 kmph (2-lane) | 60 kmph (urban)',
-    tags:['National Network','NHAI/MoRTH','Class C Sheeting','Green Informatory','High-Speed Design'],
-    sizes:[{speed:'81–100 kmph',mand:'900–1200 mm',caut:'900–1200 mm',info:'X-height: 215–250 mm',facility:'800×600 mm'},{speed:'> 100 kmph',mand:'1200–1500 mm',caut:'1200–1500 mm',info:'X-height: 250–300 mm',facility:'900×600 mm'}]
-  },
-  sh:{
-    name:'State Highway (SH)',desc:'Major roads within a state connecting district HQs and major towns. Maintained by State PWD.',
-    color:'#16A34A',colorName:'Green',speedRange:'60–100 kmph',
-    mandCaut:'900 – 1200 mm',info:'X-Height 150–215 mm',facility:'800×600 mm',
-    sheeting:'Class C mandatory for high-speed SH. Class B acceptable on lower-speed sections.',
-    infoBg:'Green background, white legend',postH:'2.0–2.5 m (rural) | 2.1–2.5 m (urban)',
-    speedLimits:'Max: 100 kmph (rural) | 60–70 kmph (urban sections)',
-    tags:['State Network','State PWD','Green Informatory','Class B or C'],
-    sizes:[{speed:'66–80 kmph',mand:'900 mm',caut:'900 mm',info:'X-height: 150 mm',facility:'800×600 mm'},{speed:'81–120 kmph',mand:'1200 mm',caut:'1200 mm',info:'X-height: 215–250 mm',facility:'800×600 mm'}]
-  },
-  mdr:{
-    name:'Major District Road (MDR)',desc:'Important roads within a district connecting towns and major villages. Maintained by District authorities.',
-    color:'#16A34A',colorName:'Green',speedRange:'50–80 kmph',
-    mandCaut:'750 – 900 mm',info:'X-Height 125–150 mm',facility:'600–800×450–600 mm',
-    sheeting:'Class B (High Intensity, ASTM Type IV) standard. 7-year warranty.',
-    infoBg:'Green background, white legend',postH:'2.0–2.5 m above pavement crown',
-    speedLimits:'Max: 80 kmph (rural) | 50 kmph (built-up area)',
-    tags:['District Network','Class B Sheeting','Green Informatory','Work Zone Signs'],
-    sizes:[{speed:'51–65 kmph',mand:'750 mm',caut:'750 mm',info:'X-height: 125 mm',facility:'600×450 mm'},{speed:'66–80 kmph',mand:'900 mm',caut:'900 mm',info:'X-height: 150 mm',facility:'800×600 mm'}]
-  },
-  odr:{
-    name:'Other District Road (ODR)',desc:'Roads serving rural areas and connecting villages to the main road network.',
-    color:'#FFFFFF',colorName:'White',speedRange:'40–65 kmph',
-    mandCaut:'600 – 750 mm',info:'X-Height 100–125 mm',facility:'600×450 mm',
-    sheeting:'Class A (Engineering Grade, ASTM Type I) minimum. 5-year warranty.',
-    infoBg:'White background, black legend/border',postH:'2.0 m minimum above pavement crown',
-    speedLimits:'Max: 65 kmph | 40 kmph in built-up areas',
-    tags:['Rural Network','Class A Sheeting','White Informatory','Low Speed'],
-    sizes:[{speed:'Up to 50 kmph',mand:'600 mm',caut:'600 mm',info:'X-height: 100 mm',facility:'600×450 mm'},{speed:'51–65 kmph',mand:'750 mm',caut:'750 mm',info:'X-height: 125 mm',facility:'600×450 mm'}]
-  },
-  vr:{
-    name:'Village Road (VR)',desc:'Roads connecting villages and hamlets. Lowest category, maintained by Gram Panchayats / PMGSY.',
-    color:'#FFFFFF',colorName:'White',speedRange:'20–50 kmph',
-    mandCaut:'600 mm',info:'X-Height 100 mm',facility:'600×450 mm',
-    sheeting:'Class A (Engineering Grade) minimum. 5-year warranty.',
-    infoBg:'White background, black legend/border',postH:'2.0 m minimum above pavement crown',
-    speedLimits:'Max: 50 kmph | 30 kmph in settlements',
-    tags:['PMGSY / Panchayat','Class A Sheeting','White Informatory','Low Speed','Minimum Standards'],
-    sizes:[{speed:'Up to 50 kmph',mand:'600 mm',caut:'600 mm',info:'X-height: 100 mm',facility:'600×450 mm'}]
-  },
-  urban:{
-    name:'Urban / Town Road',desc:'Roads within municipal limits. May include arterials, collectors, and local streets.',
-    color:'#2563EB',colorName:'Blue',speedRange:'30–80 kmph',
-    mandCaut:'600 – 900 mm (300 mm bollard permitted)',info:'X-Height 100–150 mm',facility:'600×450 mm',
-    sheeting:'Class B or C based on speed. Class A permitted on low-speed local roads.',
-    infoBg:'Blue background, white legend (urban expressways/arterials)',postH:'2.1–2.5 m above top of kerb',
-    speedLimits:'Max: 70 kmph (arterial) | 50 kmph (collector) | 30 kmph (local)',
-    tags:['Municipal Roads','Mixed Traffic','Kerb-Based Height','Bollard Signs Permitted','Blue Informatory'],
-    sizes:[{speed:'Up to 50 kmph',mand:'600 mm (or 300 mm bollard)',caut:'600 mm',info:'X-height: 100 mm',facility:'600×450 mm'},{speed:'51–80 kmph',mand:'750–900 mm',caut:'750–900 mm',info:'X-height: 125–150 mm',facility:'600–800×450–600 mm'}]
-  }
-};
- 
-// speed → road type
-const SPEED_MAP=[
-  {min:20,max:50,roads:['vr','odr','urban'],label:'Village / ODR / Urban (Low Speed)'},
-  {min:51,max:65,roads:['odr','mdr','urban','sh'],label:'ODR / MDR / Urban / SH'},
-  {min:66,max:80,roads:['mdr','sh','nh','urban'],label:'MDR / State / National Highway / Urban Arterial'},
-  {min:81,max:100,roads:['sh','nh'],label:'State Highway / National Highway'},
-  {min:101,max:120,roads:['nh','expressway'],label:'National Highway / Expressway'},
-  {min:121,max:200,roads:['expressway'],label:'Expressway'},
-];
- 
-let activeRoad=null;
- 
-function selectRoad(key,btn){
-  activeRoad=key;
-  document.querySelectorAll('#roadPills .pill').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('spdResult').classList.add('hidden');
-  renderRoadSpec(key);
-}
- 
-function renderRoadSpec(key){
-  const r=ROADS[key];
-  const out=document.getElementById('roadSpecOut');
-  // build sizes table rows
-  const sRows=r.sizes.map(s=>`<tr><td>${s.speed}</td><td class="ty">${s.mand}</td><td class="ty">${s.caut}</td><td class="tc">${s.info}</td><td>${s.facility}</td></tr>`).join('');
-  // tags
-  const tags=r.tags.map(t=>`<span class="ltag">${t}</span>`).join('');
-  // determine banner bg
-  const bannerBg=key==='expressway'?'rgba(37,99,235,0.15)':key==='urban'?'rgba(37,99,235,0.1)':'rgba(22,163,74,0.12)';
-  const iconBg=key==='expressway'||key==='urban'?'rgba(37,99,235,0.25)':'rgba(22,163,74,0.2)';
-  const iconColor=key==='expressway'||key==='urban'?'#60A5FA':'#4ade80';
- 
-  out.innerHTML=`<div class="spec-card">
-    <div class="spec-banner" style="background:${bannerBg}">
-      <div class="spec-banner-icon" style="background:${iconBg};color:${iconColor}">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l4-10 4 5 3-3 4 8"/><path d="M3 17h18"/></svg>
-      </div>
-      <div><h2 style="color:${iconColor}">${r.name}</h2><p>${r.desc}</p></div>
-    </div>
-    <div class="spec-body">
-      <div class="spec-section-title">Quick Reference</div>
-      <div class="spec-grid">
-        <div class="sg-item"><div class="sg-label">Design Speed</div><div class="sg-val" style="font-size:0.9rem;color:var(--Y)">${r.speedRange}</div></div>
-        <div class="sg-item"><div class="sg-label">Informatory Background</div><div class="sg-val" style="font-size:0.9rem;color:${iconColor}">${r.infoBg}</div></div>
-        <div class="sg-item"><div class="sg-label">Sheeting Class</div><div class="sg-val" style="font-size:0.85rem;color:var(--Y)">${r.sheeting.split('.')[0]}</div></div>
-        <div class="sg-item"><div class="sg-label">Post Height</div><div class="sg-val" style="font-size:0.85rem">${r.postH}</div></div>
-      </div>
- 
-      <div class="spec-section-title">Speed Limits</div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--MID);border-radius:4px;padding:0.8rem 1rem;font-size:0.855rem;color:var(--W)">${r.speedLimits}</div>
- 
-      <div class="spec-section-title">Sign Sizes by Speed</div>
-      <div class="twrap"><table class="sign-size-table"><thead><tr><th>Speed Range</th><th>Mandatory / Cautionary</th><th>Warning (Triangular)</th><th>Informatory</th><th>Facility</th></tr></thead><tbody>${sRows}</tbody></table></div>
- 
-      <div class="spec-section-title">Road Characteristics</div>
-      <div class="lookup-tags">${tags}</div>
-    </div>
-  </div>`;
-  out.classList.remove('hidden');
-  out.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
- 
-function lookupBySpeed(){
-  const v=parseInt(document.getElementById('spdInput').value);
-  const out=document.getElementById('spdResult');
-  if(isNaN(v)||v<20||v>200){
-    out.innerHTML=`<div class="lookup-result"><h3 style="color:#f87171">Invalid Speed</h3><p>Please enter a design speed between 20 and 200 kmph.</p></div>`;
-    out.classList.remove('hidden');return;
-  }
-  const match=SPEED_MAP.find(m=>v>=m.min&&v<=m.max);
-  if(!match){out.innerHTML=`<div class="lookup-result"><h3>No Match</h3><p>Speed ${v} kmph did not match any IRC road category.</p></div>`;out.classList.remove('hidden');return;}
- 
-  // sign sizes for this speed
-  let mand='',caut='',info='',fac='';
-  if(v<=50){mand='600 mm dia';caut='600 mm side';info='X-Height 100 mm';fac='600×450 mm';}
-  else if(v<=65){mand='750 mm dia';caut='750 mm side';info='X-Height 125 mm';fac='600×450 mm';}
-  else if(v<=80){mand='900 mm dia';caut='900 mm side';info='X-Height 150 mm';fac='800×600 mm';}
-  else if(v<=120){mand='1200 mm dia';caut='1200 mm side';info='X-Height 215–250 mm';fac='900×600 mm';}
-  else{mand='1500 mm dia';caut='1500 mm side';info='X-Height 300 mm';fac='900×600 mm';}
-  const shClass=v>80?'Class C (Micro-Prismatic)':v>50?'Class B (High Intensity)':'Class A (Engineering Grade)';
-  const roadLinks=match.roads.map(rk=>`<button class="ltag" style="border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif" onclick="document.querySelectorAll('#roadPills .pill').forEach(p=>p.classList.remove('active'));selectRoad('${rk}',document.createElement('button'))">${ROADS[rk].name}</button>`).join('');
- 
-  out.innerHTML=`<div class="lookup-result">
-    <h3>Design Speed: ${v} kmph — ${match.label}</h3>
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin:0.75rem 0">
-      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--MID);border-radius:4px;padding:0.7rem 0.9rem"><div style="font-size:0.6rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.12em;color:var(--MT);margin-bottom:0.2rem">Mandatory / Circular</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:var(--Y)">${mand}</div></div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--MID);border-radius:4px;padding:0.7rem 0.9rem"><div style="font-size:0.6rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.12em;color:var(--MT);margin-bottom:0.2rem">Cautionary / Triangle</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:var(--Y)">${caut}</div></div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--MID);border-radius:4px;padding:0.7rem 0.9rem"><div style="font-size:0.6rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.12em;color:var(--MT);margin-bottom:0.2rem">Informatory Sign</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:#60A5FA">${info}</div></div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--MID);border-radius:4px;padding:0.7rem 0.9rem"><div style="font-size:0.6rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.12em;color:var(--MT);margin-bottom:0.2rem">Sheeting Class</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:var(--Y)">${shClass}</div></div>
-    </div>
-    <p style="font-size:0.8rem;color:var(--MT);margin-bottom:0.6rem">Applicable road categories for ${v} kmph:</p>
-    <div class="lookup-tags">${roadLinks}</div>
-  </div>`;
-  out.classList.remove('hidden');
-  // clear road pills since this is speed-based
-  document.querySelectorAll('#roadPills .pill').forEach(p=>p.classList.remove('active'));
-  document.getElementById('roadSpecOut').classList.add('hidden');
-  activeRoad=null;
-}
- 
-// Enter key on speed input
-document.getElementById('spdInput').addEventListener('keydown',e=>{if(e.key==='Enter')lookupBySpeed();});
- 
-function pop(el){el.classList.remove('show');void el.offsetWidth;el.classList.add('show');}
+
+// ── INIT ─────────────────────────────────────────────────────
+buildPills();
+searchInput.addEventListener('input', e => renderList(e.target.value));
+renderList();
 </script>
 </body>
 </html>
